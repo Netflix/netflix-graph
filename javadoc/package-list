@@ -1,0 +1,6 @@
+com.netflix.nfgraph
+com.netflix.nfgraph.build
+com.netflix.nfgraph.compressed
+com.netflix.nfgraph.exception
+com.netflix.nfgraph.spec
+com.netflix.nfgraph.util
