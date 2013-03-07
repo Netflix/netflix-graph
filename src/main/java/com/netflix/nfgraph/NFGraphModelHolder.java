@@ -27,10 +27,6 @@ import com.netflix.nfgraph.util.OrdinalMap;
  * An {@link NFGraph} may contain one or more "connection models".  A "connection model" is a grouping of the set of connections
  * between nodes in the graph.<p/>
  * 
- * If connection models are not specified, a single connection model called "global" will be used to store all connections
- * for a graph.  The {@link NFGraph} methods which do not specify a connection model use the default "global" connection
- * model.<p/>
- * 
  * Connections added for a connection model will be visible only for that model.  Use of multiple connection models will 
  * add a minimum of one byte per model-specific connection set per node.  As a result, this feature should be used only 
  * when the number of connection models is and will remain low.<p/>
