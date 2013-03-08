@@ -5,7 +5,7 @@ NetflixGraph is a compact in-memory data structure used to represent directed gr
 
 NetflixGraph provides an API to translate your data into a graph format, compress that data in memory, then serialize the compressed in-memory representation of the data so that it may be easily transported across your infrastructure.
 
-NetflixGraph is currently in use at [Netflix](http://movies.netflix.com). Issues generally are fixed as quickly as possible and releases done frequently.
+NetflixGraph is currently in use at [Netflix](http://movies.netflix.com). Issues generally are fixed as quickly as possible.
 
 Artifacts
 ---------
