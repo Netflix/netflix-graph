@@ -26,7 +26,7 @@ import java.util.Iterator;
  * 
  * The values mapped to the objects will be the order in which the objects are inserted.<p/>
  * 
- * The <code>OrdinalMap</code> is memory-efficient and can retrieve an object given an ordinal, or an ordinal given an object, both in <code>O(n)</code> time.<p/>
+ * The <code>OrdinalMap</code> is memory-efficient and can retrieve an object given an ordinal, or an ordinal given an object, both in <code>O(1)</code> time.<p/>
  *
  * If, for example, some application refers to graph nodes as Strings, the OrdinalMap can be used as follows:<p/>
  * 
