@@ -31,7 +31,7 @@ import com.netflix.nfgraph.util.OrdinalMap;
  * Each "type" will be referred to by some String.  An "ordinal", in this sense, is a number that uniquely defines the node 
  * given its type.  If a type of node has "n" instances, then each instance should be representable by some unique value 
  * from 0 through (n-1).  If nodes in the graph are represented as Objects externally to the NetflixGraph library, then 
- * developers may find it helpful to use an {@link OrdinalMap} for each type to create maintain a mapping between objects 
+ * developers may find it helpful to use an {@link OrdinalMap} for each type to create and maintain a mapping between objects 
  * and their ordinals.  The {@link OrdinalMap} has been optimized with this use case in mind.  <p/>
  * 
  * Use of the NFGraph is expected to generally follow some lifecycle:<p/>
@@ -66,7 +66,7 @@ import com.netflix.nfgraph.util.OrdinalMap;
  * }
  * </pre>
  * 
- * And your consumer code will likely resemble:<p/>
+ * And your consumer code will resemble:<p/>
  * 
  * <pre>
  * {@code

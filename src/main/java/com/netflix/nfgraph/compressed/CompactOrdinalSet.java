@@ -38,9 +38,9 @@ import com.netflix.nfgraph.util.ByteArrayReader;
  * 
  * This representation for a connection set can be configured for an {@link NFPropertySpec} using {@link NFPropertySpec#COMPACT}.
  * 
- * @see <a href="http://techblog.netflix.com/2013/01/netflixgraph-metadata-library_18.html">The NetflixGraph entry on the Netflix tech blog</a>
- * @see <a href="http://en.wikipedia.org/wiki/Variable-length_quantity">Variable-length quantity on Wikipedia</a>
- * 
+ * @see <a href="http://techblog.netflix.com/2013/01/netflixgraph-metadata-library_18.html">The Netflix Tech Blog</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Variable-length_quantity">Variable-length quantity</a>
+ * @see <a href="https://github.com/Netflix/netflix-graph/wiki/Compact-representations">Compact Representations</a>
  */
 public class CompactOrdinalSet extends OrdinalSet {
 
