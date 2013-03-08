@@ -18,7 +18,7 @@ The NetflixGraph binaries are published to Maven Central.
 
 Features
 --------
-A quick overview can be found at the [Netflix Tech Blog](http://techblog.netflix.com/2013/01/netflixgraph-metadata-library_18.html). 
+A quick overview can be found either on the [wiki](https://github.com/Netflix/netflix-graph/wiki) or on the [Netflix Tech Blog](http://techblog.netflix.com/2013/01/netflixgraph-metadata-library_18.html).
 
 Since the blog article was published, a number of improvements have been made:
 
@@ -31,7 +31,15 @@ Documentation
 -------------
 Detailed documentation of NetflixGraph's features and usage can be found on the [wiki](https://github.com/Netflix/netflix-graph/wiki).
 
-Javadocs are available at [http://netflix.github.com/netflix-graph/javadoc]
+Javadocs are available [here](http://netflix.github.com/netflix-graph/javadoc).
+
+
+Build
+-----
+
+NetflixGraph is built via Gradle (www.gradle.org). To build from the command line:
+
+    ./gradlew build
 
 
 Support
