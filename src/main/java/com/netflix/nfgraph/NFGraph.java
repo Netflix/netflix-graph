@@ -79,6 +79,8 @@ import com.netflix.nfgraph.util.OrdinalMap;
  * @see NFGraphSpec
  * @see NFBuildGraph
  * @see NFCompressedGraph
+ * 
+ * @author dkoszewnik
  *
  */
 public abstract class NFGraph {
