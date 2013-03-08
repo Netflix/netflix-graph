@@ -80,6 +80,7 @@ import com.netflix.nfgraph.util.OrdinalMap;
  * @see NFBuildGraph
  * @see NFCompressedGraph
  *
+ * @author dkoszewnik
  */
 public abstract class NFGraph {
 	
