@@ -24,7 +24,7 @@ import com.netflix.nfgraph.OrdinalIterator;
 /**
  * An implementation of {@link OrdinalIterator} returned for connections in an {@link NFBuildGraph}.
  */
-class NFBuildGraphOrdinalIterator implements OrdinalIterator {
+public class NFBuildGraphOrdinalIterator implements OrdinalIterator {
     
     private final int ordinals[];
     

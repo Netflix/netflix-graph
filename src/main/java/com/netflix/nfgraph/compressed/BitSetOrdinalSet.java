@@ -34,6 +34,8 @@ import com.netflix.nfgraph.util.ByteArrayReader;
  * 
  * This representation will automatically be chosen for a set by the {@link NFCompressedGraphBuilder} when it requires fewer bytes than
  * the configured representation (either {@link NFPropertySpec#COMPACT} or {@link NFPropertySpec#HASH}).
+ * 
+ * @see <a href="https://github.com/Netflix/netflix-graph/wiki/Compact-representations">Compact Representations</a>
  */
 public class BitSetOrdinalSet extends OrdinalSet {
 
