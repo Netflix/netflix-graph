@@ -37,6 +37,9 @@ import com.netflix.nfgraph.util.Mixer;
  * This implementation provides <code>O(1)</code> time for <code>contains()</code>, but is not as memory-efficient as a {@link CompactOrdinalSet}.<p/>
  * 
  * This representation for a connection set can be configured for an {@link NFPropertySpec} using {@link NFPropertySpec#HASH}.
+ * 
+ * @see <a href="https://github.com/Netflix/netflix-graph/wiki/Compact-representations">Compact Representations</a>
+ *
  */
 public class HashSetOrdinalSet extends OrdinalSet {
 
