@@ -4,11 +4,11 @@
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Netflix-graph : Compact in-memory representation of directed graph data" />
+    <meta name="description" content="NetflixGraph : Compact in-memory representation of directed graph data" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Netflix-graph</title>
+    <title>NetflixGraph</title>
   </head>
 
   <body>
@@ -16,14 +16,14 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/dkoszewnik/netflix-graph">View on GitHub</a>
+          <a id="forkme_banner" href="https://github.com/Netflix/netflix-graph">View on GitHub</a>
 
-          <h1 id="project_title">Netflix-graph</h1>
+          <h1 id="project_title">NetflixGraph</h1>
           <h2 id="project_tagline">Compact in-memory representation of directed graph data</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/dkoszewnik/netflix-graph/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/dkoszewnik/netflix-graph/tarball/master">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/Netflix/netflix-graph/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Netflix/netflix-graph/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -31,40 +31,62 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <h3>Your memory footprint just shrank</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>NetflixGraph is a compact in-memory data structure used to represent directed graph data. You can use NetflixGraph to vastly reduce the size of your application’s memory footprint, potentially by an <a href="http://techblog.netflix.com/2013/01/netflixgraph-metadata-library_18.html">order of magnitude</a> or more. If your application is I/O bound, you may be able to remove that bottleneck by holding your entire dataset in RAM. This may be possible with NetflixGraph; you’ll likely be very surprised by how little memory is actually required to represent your data.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>NetflixGraph provides an API to translate your data into a graph format, compress that data in memory, then serialize the compressed in-memory representation of the data so that it may be easily transported across your infrastructure.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>NetflixGraph is currently in use at <a href="http://movies.netflix.com">Netflix</a>. Issues generally are fixed as quickly as possible and releases done frequently.</p>
 
-<h3>Designer Templates</h3>
+<h3>Artifacts</h3>
+
+<p>The NetflixGraph binaries are published to Maven Central.</p>
+
+<pre><code>GroupId/Org: com.netflix.nfgraph
+ArtifactID/Name: netflix-graph</code></pre>
+
+<h3>Features</h3>
+
+<p>A quick overview can be found either on the <a href="https://github.com/Netflix/netflix-graph/wiki">wiki</a> or on the <a href="http://techblog.netflix.com/2013/01/netflixgraph-metadata-library_18.html">Netflix Tech Blog</a>.</p>
+
+<p>Since the blog article was published, a number of improvements have been made:</p>
+
+<ul>
+<li>contains() operations on connection sets are no longer necessarily O(n).  Some memory-efficiency can be sacrificed to obtain O(1) performance.</li>
+<li>The library will automatically switch from the default encoding to bit set encoding if it is more memory efficient.</li>
+<li>Interfaces have been added to efficiently map Objects to ordinals.</li>
+</ul>
+
+<h3>Documentation</h3>
+
+<p>Detailed documentation of NetflixGraph's features and usage can be found on the <a href="https://github.com/Netflix/netflix-graph/wiki">wiki</a>.</p>
+
+<p>Javadocs are available <a href="http://netflix.github.com/netflix-graph/javadoc">here</a>.</p>
 
 <p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
 
-<h3>Rather Drive Stick?</h3>
+<h3>Build</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+NetflixGraph is built via Gradle (<a href="http://www.gradle.org">www.gradle.org</a>). To build from the command line:
+
+<pre><code>./gradlew build</code></pre>
+
+<h3>Support</h3>
+
+<p>Support can be obtained through the <a href="https://groups.google.com/group/netflix-graph">NetflixGraph google group</a></p>
 
 <h3>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>(<a href="http://github.com/dkoszewnik" class="user-mention">@dkoszewnik</a>) Drew Koszewnik
 
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
       </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Netflix-graph maintained by <a href="https://github.com/dkoszewnik">dkoszewnik</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">NetflixGraph maintained by <a href="https://github.com/dkoszewnik" class="user-mention">@dkoszewnik</a> at <a href="https://github.com/Netflix" class="user-mention">@Netflix</a></p>
       </footer>
     </div>
 
