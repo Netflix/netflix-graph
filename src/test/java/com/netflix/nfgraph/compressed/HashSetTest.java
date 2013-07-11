@@ -17,10 +17,17 @@
 
 package com.netflix.nfgraph.compressed;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 import com.netflix.nfgraph.OrdinalSet;
 import com.netflix.nfgraph.compressor.HashedPropertyBuilder;
 import com.netflix.nfgraph.util.ByteArrayBuffer;
 import com.netflix.nfgraph.util.ByteArrayReader;
+
+import org.junit.Test;
 
 public class HashSetTest extends EncodedConnectionSetTest {
 
@@ -44,5 +51,22 @@ public class HashSetTest extends EncodedConnectionSetTest {
     protected int maximumTotalOrdinals() {
         return 100000;
     }
+
+    @Test
+    public void singleOrdinal127IsSizedAppropriately() {
+    	ByteArrayBuffer buf = new ByteArrayBuffer();
+    	
+    	HashedPropertyBuilder builder = new HashedPropertyBuilder(buf);
+    	
+    	builder.buildProperty(new SingleOrdinalSet(127));
+    	
+    	ByteArrayReader reader = new ByteArrayReader(buf.getData(), 0);
+    	
+    	OrdinalSet set = new HashSetOrdinalSet(reader);
+    	
+    	assertTrue(set.contains(127));
+    	assertFalse(set.contains(128));
+    }
+
 
 }
