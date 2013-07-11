@@ -154,7 +154,7 @@ public class HashedPropertyBuilder {
 		int ordinal = ordinalIterator.nextOrdinal();
 
 		while(ordinal != NO_MORE_ORDINALS) {
-			totalSize += calculateVIntSize(ordinal);
+			totalSize += calculateVIntSize(ordinal + 1);
 			ordinal = ordinalIterator.nextOrdinal();
 		}
 
