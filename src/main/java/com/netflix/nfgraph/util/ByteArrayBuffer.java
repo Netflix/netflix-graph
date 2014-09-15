@@ -118,7 +118,7 @@ public class ByteArrayBuffer {
     }
 
     private void grow() {
-        this.data = Arrays.copyOf(data, (int)(((long)data.length * 3) / 2));
+        this.data = Arrays.copyOf(data, (int)(((long)data.length * 5) / 4));
     }
 
     private byte[] backingArray() {
