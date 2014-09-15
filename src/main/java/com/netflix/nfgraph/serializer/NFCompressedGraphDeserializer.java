@@ -28,88 +28,92 @@ import com.netflix.nfgraph.spec.NFGraphSpec;
 import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
 import com.netflix.nfgraph.util.ByteArrayReader;
+import com.netflix.nfgraph.util.ByteData;
+import com.netflix.nfgraph.util.SegmentedByteArray;
+import com.netflix.nfgraph.util.SimpleByteArray;
 
 /**
  * This class is used by {@link NFCompressedGraph#readFrom(InputStream)}.<p/>
- * 
+ *
  * It is unlikely that this class will need to be used externally.
  */
 public class NFCompressedGraphDeserializer {
 
     public NFCompressedGraph deserialize(InputStream is) throws IOException {
         DataInputStream dis = new DataInputStream(is);
-        
+
         NFGraphSpec spec = deserializeSpec(dis);
         NFGraphModelHolder models = deserializeModels(dis);
         NFCompressedGraphPointers pointers = deserializePointers(dis);
-        byte data[] = deserializeData(dis);
-        
-        return new NFCompressedGraph(spec, models, data, pointers);
+        long dataLength = deserializeDataLength(dis);
+        ByteData data = deserializeData(dis, dataLength);
+
+        return new NFCompressedGraph(spec, models, data, dataLength, pointers);
     }
 
 
     private NFGraphSpec deserializeSpec(DataInputStream dis) throws IOException {
         int numNodes = dis.readInt();
         NFNodeSpec nodeSpecs[] = new NFNodeSpec[numNodes];
-        
+
         for(int i=0;i<numNodes;i++) {
             String nodeTypeName = dis.readUTF();
             int numProperties = dis.readInt();
             NFPropertySpec propertySpecs[] = new NFPropertySpec[numProperties];
-            
+
             for(int j=0;j<numProperties;j++) {
                 String propertyName = dis.readUTF();
                 String toNodeType = dis.readUTF();
                 boolean isGlobal = dis.readBoolean();
                 boolean isMultiple = dis.readBoolean();
                 boolean isHashed = dis.readBoolean();
-                
+
                 propertySpecs[j] = new NFPropertySpec(propertyName, toNodeType, isGlobal, isMultiple, isHashed);
             }
-            
+
             nodeSpecs[i] = new NFNodeSpec(nodeTypeName, propertySpecs);
         }
-        
+
         return new NFGraphSpec(nodeSpecs);
     }
 
     private NFGraphModelHolder deserializeModels(DataInputStream dis) throws IOException {
         int numModels = dis.readInt();
         NFGraphModelHolder modelHolder = new NFGraphModelHolder();
-        
+
         for(int i=0;i<numModels;i++) {
             modelHolder.getModelIndex(dis.readUTF());
         }
-        
+
         return modelHolder;
     }
 
     private NFCompressedGraphPointers deserializePointers(DataInputStream dis) throws IOException {
         int numTypes = dis.readInt();
         NFCompressedGraphPointers pointers = new NFCompressedGraphPointers();
-        
+
         for(int i=0;i<numTypes;i++) {
             String nodeType = dis.readUTF();
-            
+
             pointers.addPointers(nodeType, deserializePointerArray(dis));
         }
-        
+
         return pointers;
     }
 
-    private int[] deserializePointerArray(DataInputStream dis) throws IOException {
+    private long[] deserializePointerArray(DataInputStream dis) throws IOException {
         int numNodes = dis.readInt();
         int numBytes = dis.readInt();
-        
+
         byte data[] = new byte[numBytes];
-        int pointers[] = new int[numNodes];
+        long pointers[] = new long[numNodes];
 
         dis.readFully(data);
-        
-        ByteArrayReader reader = new ByteArrayReader(data, 0);
-        
-        int currentPointer = 0;
-        
+
+        ByteArrayReader reader = new ByteArrayReader(new SimpleByteArray(data), 0);
+
+        long currentPointer = 0;
+
         for(int i=0;i<numNodes;i++) {
             int vInt = reader.readVInt();
             if(vInt == -1) {
@@ -119,14 +123,29 @@ public class NFCompressedGraphDeserializer {
                 pointers[i] = currentPointer;
             }
         }
-        
+
         return pointers;
     }
 
-    private byte[] deserializeData(DataInputStream dis) throws IOException {
+    /// Backwards compatibility:  If the data length is greater than Integer.MAX_VALUE, then
+    /// -1 is serialized as an int before a long containing the actual length.
+    private long deserializeDataLength(DataInputStream dis) throws IOException {
         int dataLength = dis.readInt();
-        byte data[] = new byte[dataLength];
-        dis.readFully(data);
-        return data;
+        if(dataLength == -1) {
+            return dis.readLong();
+        }
+        return dataLength;
+    }
+
+    private ByteData deserializeData(DataInputStream dis, long dataLength) throws IOException {
+        if(dataLength >= 0x20000000) {
+            SegmentedByteArray data = new SegmentedByteArray(14);
+            data.readFrom(dis, dataLength);
+            return data;
+        } else {
+            byte data[] = new byte[(int)dataLength];
+            dis.readFully(data);
+            return new SimpleByteArray(data);
+        }
     }
 }

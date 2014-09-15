@@ -20,30 +20,31 @@ package com.netflix.nfgraph.compressed;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
 import com.netflix.nfgraph.OrdinalSet;
 import com.netflix.nfgraph.compressor.HashedPropertyBuilder;
 import com.netflix.nfgraph.util.ByteArrayBuffer;
 import com.netflix.nfgraph.util.ByteArrayReader;
+import com.netflix.nfgraph.util.ByteData;
 
 import org.junit.Test;
 
 public class HashSetTest extends EncodedConnectionSetTest {
 
     @Override
-    protected byte[] generateCompressedData(OrdinalSet ordinals) {
+    protected ByteData generateCompressedData(OrdinalSet ordinals) {
         ByteArrayBuffer buf = new ByteArrayBuffer();
         HashedPropertyBuilder builder = new HashedPropertyBuilder(buf);
-        
+
         builder.buildProperty(ordinals);
-        
+
+        dataLength = buf.length();
+
         return buf.getData();
     }
-    
+
     @Override
     protected OrdinalSet createOrdinalSet() {
-        ByteArrayReader reader = new ByteArrayReader(data, 0);
+        ByteArrayReader reader = new ByteArrayReader(data, 0, dataLength);
         return new HashSetOrdinalSet(reader);
     }
 
@@ -55,15 +56,15 @@ public class HashSetTest extends EncodedConnectionSetTest {
     @Test
     public void singleOrdinal127IsSizedAppropriately() {
     	ByteArrayBuffer buf = new ByteArrayBuffer();
-    	
+
     	HashedPropertyBuilder builder = new HashedPropertyBuilder(buf);
-    	
+
     	builder.buildProperty(new SingleOrdinalSet(127));
-    	
-    	ByteArrayReader reader = new ByteArrayReader(buf.getData(), 0);
-    	
+
+    	ByteArrayReader reader = new ByteArrayReader(buf.getData(), 0, buf.length());
+
     	OrdinalSet set = new HashSetOrdinalSet(reader);
-    	
+
     	assertTrue(set.contains(127));
     	assertFalse(set.contains(128));
     }

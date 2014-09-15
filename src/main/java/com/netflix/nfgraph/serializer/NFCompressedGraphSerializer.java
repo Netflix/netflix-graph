@@ -29,10 +29,11 @@ import com.netflix.nfgraph.spec.NFGraphSpec;
 import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
 import com.netflix.nfgraph.util.ByteArrayBuffer;
+import com.netflix.nfgraph.util.ByteData;
 
 /**
  * This class is used by {@link NFCompressedGraph#writeTo(OutputStream)}.<p/>
- * 
+ *
  * It is unlikely that this class will need to be used externally.
  */
 public class NFCompressedGraphSerializer {
@@ -40,13 +41,15 @@ public class NFCompressedGraphSerializer {
     private final NFGraphSpec spec;
     private final NFGraphModelHolder modelHolder;
     private final NFCompressedGraphPointers pointers;
-    private final byte data[];
-    
-    public NFCompressedGraphSerializer(NFGraphSpec spec, NFGraphModelHolder modelHolder, NFCompressedGraphPointers pointers, byte data[]) {
+    private final ByteData data;
+    private final long dataLength;
+
+    public NFCompressedGraphSerializer(NFGraphSpec spec, NFGraphModelHolder modelHolder, NFCompressedGraphPointers pointers, ByteData data, long dataLength) {
         this.spec = spec;
         this.modelHolder = modelHolder;
         this.pointers = pointers;
         this.data = data;
+        this.dataLength = dataLength;
     }
 
     public void serializeTo(OutputStream os) throws IOException {
@@ -56,17 +59,17 @@ public class NFCompressedGraphSerializer {
         serializeModels(dos);
         serializePointers(dos);
         serializeData(dos);
-        
+
         dos.flush();
     }
 
     private void serializeSpec(DataOutputStream dos) throws IOException {
         dos.writeInt(spec.size());
-        
+
         for(NFNodeSpec nodeSpec : spec) {
             dos.writeUTF(nodeSpec.getNodeTypeName());
             dos.writeInt(nodeSpec.getPropertySpecs().length);
-            
+
             for(NFPropertySpec propertySpec : nodeSpec.getPropertySpecs()) {
                 dos.writeUTF(propertySpec.getName());
                 dos.writeUTF(propertySpec.getToNodeType());
@@ -86,34 +89,40 @@ public class NFCompressedGraphSerializer {
 
     private void serializePointers(DataOutputStream dos) throws IOException {
         dos.writeInt(pointers.asMap().size());
-        
-        for(Map.Entry<String, int[]>entry : pointers.asMap().entrySet()) {
+
+        for(Map.Entry<String, long[]>entry : pointers.asMap().entrySet()) {
             dos.writeUTF(entry.getKey());
             serializePointerArray(dos, entry.getValue());
         }
     }
-    
-    private void serializePointerArray(DataOutputStream dos, int pointers[]) throws IOException {
+
+    private void serializePointerArray(DataOutputStream dos, long pointers[]) throws IOException {
         ByteArrayBuffer buf = new ByteArrayBuffer();
-        
-        int currentPointer = 0;
-        
+
+        long currentPointer = 0;
+
         for(int i=0;i<pointers.length;i++) {
             if(pointers[i] == -1) {
                 buf.writeVInt(-1);
             } else {
-                buf.writeVInt(pointers[i] - currentPointer);
+                buf.writeVInt((int)(pointers[i] - currentPointer));
                 currentPointer = pointers[i];
             }
         }
-        
+
         dos.writeInt(pointers.length);
-        dos.writeInt(buf.length());
+        dos.writeInt((int)buf.length());
         buf.copyTo(dos);
     }
-    
+
     private void serializeData(DataOutputStream dos) throws IOException {
-        dos.writeInt(data.length);
-        dos.write(data);
+        if(dataLength > Integer.MAX_VALUE) {
+            dos.writeInt(-1);
+            dos.writeLong(dataLength);
+        } else {
+            dos.writeInt((int)dataLength);
+        }
+
+        data.writeTo(dos, dataLength);
     }
 }

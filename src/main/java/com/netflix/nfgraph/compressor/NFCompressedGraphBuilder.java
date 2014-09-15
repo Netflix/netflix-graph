@@ -33,7 +33,7 @@ import com.netflix.nfgraph.util.ByteArrayBuffer;
 
 /**
  * <code>NFCompressedGraphBuilder</code> is used by {@link NFBuildGraph#compress()} to create an {@link NFCompressedGraph}.<p/>
- * 
+ *
  * It is unlikely that this class will need to be used externally.
  */
 public class NFCompressedGraphBuilder {
@@ -41,46 +41,46 @@ public class NFCompressedGraphBuilder {
     private final NFGraphSpec graphSpec;
     private final NFBuildGraphNodeCache buildGraphNodeCache;
     private final NFGraphModelHolder modelHolder;
-    
+
     private final ByteArrayBuffer graphBuffer;
     private final ByteArrayBuffer modelBuffer;
     private final ByteArrayBuffer fieldBuffer;
-    
+
     private final CompactPropertyBuilder compactPropertyBuilder;
     private final HashedPropertyBuilder hashedPropertyBuilder;
     private final BitSetPropertyBuilder bitSetPropertyBuilder;
-    
-    private NFCompressedGraphPointers compressedGraphPointers;
-    
+
+    private final NFCompressedGraphPointers compressedGraphPointers;
+
     public NFCompressedGraphBuilder(NFGraphSpec graphSpec, NFBuildGraphNodeCache buildGraphNodeCache, NFGraphModelHolder modelHolder) {
         this.graphSpec = graphSpec;
         this.buildGraphNodeCache = buildGraphNodeCache;
         this.modelHolder = modelHolder;
-        
+
         this.graphBuffer = new ByteArrayBuffer();
         this.modelBuffer = new ByteArrayBuffer();
         this.fieldBuffer = new ByteArrayBuffer();
-        
+
         this.compactPropertyBuilder = new CompactPropertyBuilder(fieldBuffer);
         this.hashedPropertyBuilder = new HashedPropertyBuilder(fieldBuffer);
         this.bitSetPropertyBuilder = new BitSetPropertyBuilder(fieldBuffer);
-        
+
         this.compressedGraphPointers = new NFCompressedGraphPointers();
     }
-    
+
     public NFCompressedGraph buildGraph() {
     	for(String nodeType : graphSpec.getNodeTypes()) {
     		List<NFBuildGraphNode> nodeOrdinals = buildGraphNodeCache.getNodes(nodeType);
     		addNodeType(nodeType, nodeOrdinals);
     	}
-        
-        return new NFCompressedGraph(graphSpec, modelHolder, graphBuffer.getData(), compressedGraphPointers);
+
+        return new NFCompressedGraph(graphSpec, modelHolder, graphBuffer.getData(), graphBuffer.length(), compressedGraphPointers);
     }
 
     private void addNodeType(String nodeType, List<NFBuildGraphNode> nodes) {
         NFNodeSpec nodeSpec = graphSpec.getNodeSpec(nodeType);
-        int ordinalPointers[] = new int[nodes.size()];
-        
+        long ordinalPointers[] = new long[nodes.size()];
+
         for(int i=0;i<nodes.size();i++) {
             NFBuildGraphNode node = nodes.get(i);
             if(node != null) {
@@ -90,16 +90,16 @@ public class NFCompressedGraphBuilder {
                 ordinalPointers[i] = -1;
             }
         }
-        
+
         compressedGraphPointers.addPointers(nodeType, ordinalPointers);
     }
-    
+
     private void serializeNode(NFBuildGraphNode node, NFNodeSpec nodeSpec) {
         for(NFPropertySpec propertySpec : nodeSpec.getPropertySpecs()) {
             serializeProperty(node, propertySpec);
         }
     }
-    
+
     private void serializeProperty(NFBuildGraphNode node, NFPropertySpec propertySpec) {
         if(propertySpec.isConnectionModelSpecific()) {
             for(int i=0;i<modelHolder.size();i++) {
@@ -110,7 +110,7 @@ public class NFCompressedGraphBuilder {
             serializeProperty(node, propertySpec, 0, graphBuffer);
         }
     }
-    
+
     private void serializeProperty(NFBuildGraphNode node, NFPropertySpec propertySpec, int connectionModelIndex, ByteArrayBuffer toBuffer) {
         if(propertySpec.isMultiple()) {
             serializeMultipleProperty(node, propertySpec, connectionModelIndex, toBuffer);
@@ -126,15 +126,15 @@ public class NFCompressedGraphBuilder {
 
     private void serializeMultipleProperty(NFBuildGraphNode node, NFPropertySpec propertySpec, int connectionModelIndex, ByteArrayBuffer toBuffer) {
         OrdinalSet connections = node.getConnectionSet(connectionModelIndex, propertySpec);
-        
+
         int numBitsInBitSet = buildGraphNodeCache.numNodes(propertySpec.getToNodeType());
 		int bitSetSize = ((numBitsInBitSet - 1) / 8) + 1;
-        
+
         if(connections.size() < bitSetSize) {
         	if(propertySpec.isHashed()) {
         		hashedPropertyBuilder.buildProperty(connections);
         		if(fieldBuffer.length() < bitSetSize) {
-        	        int log2BytesUsed = 32 - Integer.numberOfLeadingZeros(fieldBuffer.length());
+        	        int log2BytesUsed = 32 - Integer.numberOfLeadingZeros((int)fieldBuffer.length());
         	        toBuffer.writeByte((byte)log2BytesUsed);
         			toBuffer.write(fieldBuffer);
         			fieldBuffer.reset();
@@ -143,26 +143,26 @@ public class NFCompressedGraphBuilder {
         	} else {
         		compactPropertyBuilder.buildProperty(connections);
         		if(fieldBuffer.length() < bitSetSize) {
-        			toBuffer.writeVInt(fieldBuffer.length());
+        			toBuffer.writeVInt((int)fieldBuffer.length());
         			toBuffer.write(fieldBuffer);
         			fieldBuffer.reset();
         			return;
         		}
         	}
-        	
+
         	fieldBuffer.reset();
         }
-        
+
         bitSetPropertyBuilder.buildProperty(connections, numBitsInBitSet);
         toBuffer.writeByte((byte)0x80);
         toBuffer.write(fieldBuffer);
         fieldBuffer.reset();
     }
-    
+
     private void copyBuffer(ByteArrayBuffer from, ByteArrayBuffer to) {
-        to.writeVInt(from.length());
+        to.writeVInt((int)from.length());
         to.write(from);
         from.reset();
     }
-    
+
 }

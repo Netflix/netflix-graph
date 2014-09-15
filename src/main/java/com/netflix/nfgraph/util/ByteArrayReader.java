@@ -23,109 +23,109 @@ import com.netflix.nfgraph.compressed.NFCompressedGraph;
 
 /**
  * Used by the {@link NFCompressedGraph}, and various {@link OrdinalSet} and {@link OrdinalIterator} implementations to read the encoded graph data.<p/>
- * 
+ *
  * It is unlikely that this class will be required externally.
  */
 public class ByteArrayReader {
 
-    private final byte data[];
-    
-    private int pointer;
-    private int startByte;
-    private int endByte = Integer.MAX_VALUE;
-    
-    public ByteArrayReader(byte data[], int pointer) {
+    private final ByteData data;
+
+    private long pointer;
+    private long startByte;
+    private long endByte = Integer.MAX_VALUE;
+
+    public ByteArrayReader(ByteData data, long pointer) {
         this.data = data;
         this.pointer = pointer;
         this.startByte = pointer;
-        this.endByte = data.length;
+        this.endByte = data.length();
     }
-    
-    private ByteArrayReader(byte data[], int startByte, int endByte) {
+
+    public ByteArrayReader(ByteData data, long startByte, long endByte) {
         this.data = data;
         this.startByte = startByte;
         this.endByte = endByte;
         this.pointer = startByte;
     }
-    
+
     /**
      * @return the byte value at the given offset.
      */
-    public byte getByte(int offset) {
-        return data[startByte + offset];
+    public byte getByte(long offset) {
+        return data.get(startByte + offset);
     }
-    
+
     /**
      * Set the current offset of this reader.
      */
-    public void setPointer(int pointer) {
+    public void setPointer(long pointer) {
         this.pointer = pointer;
     }
-    
+
     /**
-     * Increment the current offset of this reader by numBytes. 
+     * Increment the current offset of this reader by numBytes.
      */
-    public void skip(int numBytes) {
+    public void skip(long numBytes) {
         pointer += numBytes;
     }
-    
+
     /**
-     * @return a variable-byte integer at the current offset.  The offset is incremented by the size of the returned integer. 
+     * @return a variable-byte integer at the current offset.  The offset is incremented by the size of the returned integer.
      */
     public int readVInt() {
         if(pointer >= endByte)
             return -1;
-        
+
         byte b = readByte();
-        
+
         if(b == (byte) 0x80)
             return -1;
-        
+
         int value = b & 0x7F;
         while ((b & 0x80) != 0) {
           b = readByte();
           value <<= 7;
           value |= (b & 0x7F);
         }
-        
+
         return value;
     }
-    
+
     /**
      * @return the byte at the current offset.  The offset is incremented by one.
      */
     public byte readByte() {
-        return data[pointer++];
+        return data.get(pointer++);
     }
 
     /**
-     * Sets the start byte of this reader to the current offset, then sets the end byte to the current offset + <code>remainingBytes</code> 
+     * Sets the start byte of this reader to the current offset, then sets the end byte to the current offset + <code>remainingBytes</code>
      */
     public void setRemainingBytes(int remainingBytes) {
         this.startByte = pointer;
         this.endByte = pointer + remainingBytes;
     }
-    
+
     /**
      * Sets the current offset of this reader to the start byte.
      */
     public void reset() {
         this.pointer = startByte;
     }
-    
+
     /**
-     * @return the length of this reader. 
+     * @return the length of this reader.
      */
-    public int length() {
+    public long length() {
         return endByte - startByte;
     }
-    
+
     /**
      * @return a copy of this reader.  The copy will have the same underlying byte array, start byte, and end byte, but the current offset will be equal to the start byte.
      */
     public ByteArrayReader copy() {
         return new ByteArrayReader(data, startByte, endByte);
     }
-    
-    
+
+
 }

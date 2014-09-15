@@ -21,22 +21,25 @@ import com.netflix.nfgraph.OrdinalSet;
 import com.netflix.nfgraph.compressor.BitSetPropertyBuilder;
 import com.netflix.nfgraph.util.ByteArrayBuffer;
 import com.netflix.nfgraph.util.ByteArrayReader;
+import com.netflix.nfgraph.util.ByteData;
 
 public class BitSetTest extends EncodedConnectionSetTest {
 
     @Override
-    protected byte[] generateCompressedData(OrdinalSet ordinals) {
+    protected ByteData generateCompressedData(OrdinalSet ordinals) {
         ByteArrayBuffer buf = new ByteArrayBuffer();
         BitSetPropertyBuilder builder = new BitSetPropertyBuilder(buf);
-        
+
         builder.buildProperty(ordinals, totalOrdinals);
-        
+
+        dataLength = buf.length();
+
         return buf.getData();
     }
-    
+
     @Override
     protected OrdinalSet createOrdinalSet() {
-        ByteArrayReader reader = new ByteArrayReader(data, 0);
+        ByteArrayReader reader = new ByteArrayReader(data, 0, dataLength);
         return new BitSetOrdinalSet(reader);
     }
 
@@ -44,5 +47,5 @@ public class BitSetTest extends EncodedConnectionSetTest {
     protected int maximumTotalOrdinals() {
         return 100000;
     }
-    
+
 }

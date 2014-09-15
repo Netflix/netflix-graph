@@ -17,11 +17,10 @@
 
 package com.netflix.nfgraph.util;
 
+import com.netflix.nfgraph.compressor.NFCompressedGraphBuilder;
+
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
-
-import com.netflix.nfgraph.compressor.NFCompressedGraphBuilder;
 
 /**
  * A <code>ByteArrayBuffer</code> is used by the {@link NFCompressedGraphBuilder} to write data to a byte array.<p/>
@@ -30,27 +29,28 @@ import com.netflix.nfgraph.compressor.NFCompressedGraphBuilder;
  */
 public class ByteArrayBuffer {
 
-    private byte data[];
+    private final SegmentedByteArray data;
 
-    private int pointer;
+    private long pointer;
 
     public ByteArrayBuffer() {
-        this(1024);
+        this.data = new SegmentedByteArray(14);
+        this.pointer = 0;
     }
 
+    /**
+     * @deprecated Use zero-argument constructor instead.
+     */
+    @Deprecated
     public ByteArrayBuffer(int initialSize) {
-        this.data = new byte[initialSize];
-        this.pointer = 0;
+        this();
     }
 
     /**
      * Copies the contents of the specified buffer into this buffer at the current position.
      */
     public void write(ByteArrayBuffer buf) {
-        while(data.length < pointer + buf.length())
-            grow();
-
-        System.arraycopy(buf.backingArray(), 0, data, pointer, buf.length());
+        data.copy(buf.data, 0, pointer, buf.length());
         pointer += buf.length();
     }
 
@@ -74,7 +74,7 @@ public class ByteArrayBuffer {
     /**
      * The current length of the written data, in bytes.
      */
-    public int length() {
+    public long length() {
         return pointer;
     }
 
@@ -86,19 +86,17 @@ public class ByteArrayBuffer {
     }
 
     /**
-     * @return a byte array containing a copy of the written data.  The length of the byte array will be exactly equal to the written data.
+     * @return The underlying SegmentedByteArray containing the written data.
      */
-    public byte[] getData() {
-        return Arrays.copyOf(data, length());
+    public SegmentedByteArray getData() {
+        return data;
     }
 
     /**
      * Writes a byte of data.
      */
     public void writeByte(byte b) {
-        if(pointer == data.length)
-            grow();
-        data[pointer++] = b;
+        data.set(pointer++, b);
     }
 
     /**
@@ -114,15 +112,7 @@ public class ByteArrayBuffer {
      * Copies the written data to the given <code>OutputStream</code>
      */
     public void copyTo(OutputStream os) throws IOException {
-        os.write(data, 0, pointer);
-    }
-
-    private void grow() {
-        this.data = Arrays.copyOf(data, (int)(((long)data.length * 5) / 4));
-    }
-
-    private byte[] backingArray() {
-        return data;
+        data.writeTo(os, 0, pointer);
     }
 
 }
