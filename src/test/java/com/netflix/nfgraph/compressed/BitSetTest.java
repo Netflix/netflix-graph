@@ -17,11 +17,19 @@
 
 package com.netflix.nfgraph.compressed;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import com.netflix.nfgraph.OrdinalSet;
 import com.netflix.nfgraph.compressor.BitSetPropertyBuilder;
+import com.netflix.nfgraph.compressor.HashedPropertyBuilder;
 import com.netflix.nfgraph.util.ByteArrayBuffer;
 import com.netflix.nfgraph.util.ByteArrayReader;
 import com.netflix.nfgraph.util.ByteData;
+import com.netflix.nfgraph.util.SimpleByteArray;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 public class BitSetTest extends EncodedConnectionSetTest {
 
@@ -46,6 +54,21 @@ public class BitSetTest extends EncodedConnectionSetTest {
     @Override
     protected int maximumTotalOrdinals() {
         return 100000;
+    }
+
+
+    @Test
+    public void bitSetDoesNotAttemptToReadPastRange() {
+        byte[] data = new byte[] { 1, 1, 1 };
+
+        ByteArrayReader reader = new ByteArrayReader(new SimpleByteArray(data), 1, 2);
+
+        BitSetOrdinalSet set = new BitSetOrdinalSet(reader);
+
+        Assert.assertEquals(1, set.size());
+
+        Assert.assertTrue(set.contains(0));
+        Assert.assertFalse(set.contains(8));
     }
 
 }
