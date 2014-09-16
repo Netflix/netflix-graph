@@ -17,19 +17,17 @@
 
 package com.netflix.nfgraph.serializer;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Map;
-
 import com.netflix.nfgraph.NFGraphModelHolder;
 import com.netflix.nfgraph.compressed.NFCompressedGraph;
 import com.netflix.nfgraph.compressed.NFCompressedGraphPointers;
 import com.netflix.nfgraph.spec.NFGraphSpec;
 import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
-import com.netflix.nfgraph.util.ByteArrayBuffer;
 import com.netflix.nfgraph.util.ByteData;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * This class is used by {@link NFCompressedGraph#writeTo(OutputStream)}.<p/>
@@ -40,14 +38,14 @@ public class NFCompressedGraphSerializer {
 
     private final NFGraphSpec spec;
     private final NFGraphModelHolder modelHolder;
-    private final NFCompressedGraphPointers pointers;
+    private final NFCompressedGraphPointersSerializer pointersSerializer;
     private final ByteData data;
     private final long dataLength;
 
     public NFCompressedGraphSerializer(NFGraphSpec spec, NFGraphModelHolder modelHolder, NFCompressedGraphPointers pointers, ByteData data, long dataLength) {
         this.spec = spec;
         this.modelHolder = modelHolder;
-        this.pointers = pointers;
+        this.pointersSerializer = new NFCompressedGraphPointersSerializer(pointers, dataLength);
         this.data = data;
         this.dataLength = dataLength;
     }
@@ -57,7 +55,7 @@ public class NFCompressedGraphSerializer {
 
         serializeSpec(dos);
         serializeModels(dos);
-        serializePointers(dos);
+        pointersSerializer.serializePointers(dos);
         serializeData(dos);
 
         dos.flush();
@@ -87,35 +85,11 @@ public class NFCompressedGraphSerializer {
         }
     }
 
-    private void serializePointers(DataOutputStream dos) throws IOException {
-        dos.writeInt(pointers.asMap().size());
-
-        for(Map.Entry<String, long[]>entry : pointers.asMap().entrySet()) {
-            dos.writeUTF(entry.getKey());
-            serializePointerArray(dos, entry.getValue());
-        }
-    }
-
-    private void serializePointerArray(DataOutputStream dos, long pointers[]) throws IOException {
-        ByteArrayBuffer buf = new ByteArrayBuffer();
-
-        long currentPointer = 0;
-
-        for(int i=0;i<pointers.length;i++) {
-            if(pointers[i] == -1) {
-                buf.writeVInt(-1);
-            } else {
-                buf.writeVInt((int)(pointers[i] - currentPointer));
-                currentPointer = pointers[i];
-            }
-        }
-
-        dos.writeInt(pointers.length);
-        dos.writeInt((int)buf.length());
-        buf.copyTo(dos);
-    }
-
     private void serializeData(DataOutputStream dos) throws IOException {
+        /// In order to maintain backwards compatibility of produced artifacts,
+        /// if more than Integer.MAX_VALUE bytes are required in the data,
+        /// first serialize a negative 1 integer, then serialize the number
+        /// of required bits as a long.
         if(dataLength > Integer.MAX_VALUE) {
             dos.writeInt(-1);
             dos.writeLong(dataLength);

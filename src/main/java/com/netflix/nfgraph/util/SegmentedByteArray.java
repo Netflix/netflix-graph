@@ -31,8 +31,6 @@ public class SegmentedByteArray implements ByteData {
      * Get the value of the byte at the specified index.
      */
     public byte get(long index) {
-        if(index < 0)
-            System.out.println("hey!");
         return segments[(int)(index >>> log2OfSegmentSize)][(int)(index & bitmask)];
     }
 
@@ -99,11 +97,7 @@ public class SegmentedByteArray implements ByteData {
             long bytesToCopy = Math.min(segmentSize, length);
             long bytesCopied = 0;
             while(bytesCopied < bytesToCopy) {
-                try {
-                    bytesCopied += is.read(segments[segment], (int)bytesCopied, (int)(bytesToCopy - bytesCopied));
-                } catch(IndexOutOfBoundsException e) {
-                    System.out.println("how?");
-                }
+                bytesCopied += is.read(segments[segment], (int)bytesCopied, (int)(bytesToCopy - bytesCopied));
             }
             segment++;
             length -= bytesCopied;

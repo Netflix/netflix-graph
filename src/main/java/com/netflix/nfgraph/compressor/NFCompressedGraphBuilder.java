@@ -17,19 +17,19 @@
 
 package com.netflix.nfgraph.compressor;
 
-import java.util.List;
-
 import com.netflix.nfgraph.NFGraphModelHolder;
 import com.netflix.nfgraph.OrdinalSet;
 import com.netflix.nfgraph.build.NFBuildGraph;
 import com.netflix.nfgraph.build.NFBuildGraphNode;
 import com.netflix.nfgraph.build.NFBuildGraphNodeCache;
 import com.netflix.nfgraph.compressed.NFCompressedGraph;
-import com.netflix.nfgraph.compressed.NFCompressedGraphPointers;
+import com.netflix.nfgraph.compressed.NFCompressedGraphLongPointers;
 import com.netflix.nfgraph.spec.NFGraphSpec;
 import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
 import com.netflix.nfgraph.util.ByteArrayBuffer;
+
+import java.util.List;
 
 /**
  * <code>NFCompressedGraphBuilder</code> is used by {@link NFBuildGraph#compress()} to create an {@link NFCompressedGraph}.<p/>
@@ -50,7 +50,7 @@ public class NFCompressedGraphBuilder {
     private final HashedPropertyBuilder hashedPropertyBuilder;
     private final BitSetPropertyBuilder bitSetPropertyBuilder;
 
-    private final NFCompressedGraphPointers compressedGraphPointers;
+    private final NFCompressedGraphLongPointers compressedGraphPointers;
 
     public NFCompressedGraphBuilder(NFGraphSpec graphSpec, NFBuildGraphNodeCache buildGraphNodeCache, NFGraphModelHolder modelHolder) {
         this.graphSpec = graphSpec;
@@ -65,7 +65,7 @@ public class NFCompressedGraphBuilder {
         this.hashedPropertyBuilder = new HashedPropertyBuilder(fieldBuffer);
         this.bitSetPropertyBuilder = new BitSetPropertyBuilder(fieldBuffer);
 
-        this.compressedGraphPointers = new NFCompressedGraphPointers();
+        this.compressedGraphPointers = new NFCompressedGraphLongPointers();
     }
 
     public NFCompressedGraph buildGraph() {

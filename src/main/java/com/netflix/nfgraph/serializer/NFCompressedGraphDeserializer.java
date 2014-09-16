@@ -17,20 +17,19 @@
 
 package com.netflix.nfgraph.serializer;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import com.netflix.nfgraph.NFGraphModelHolder;
 import com.netflix.nfgraph.compressed.NFCompressedGraph;
 import com.netflix.nfgraph.compressed.NFCompressedGraphPointers;
 import com.netflix.nfgraph.spec.NFGraphSpec;
 import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
-import com.netflix.nfgraph.util.ByteArrayReader;
 import com.netflix.nfgraph.util.ByteData;
 import com.netflix.nfgraph.util.SegmentedByteArray;
 import com.netflix.nfgraph.util.SimpleByteArray;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This class is used by {@link NFCompressedGraph#readFrom(InputStream)}.<p/>
@@ -39,12 +38,14 @@ import com.netflix.nfgraph.util.SimpleByteArray;
  */
 public class NFCompressedGraphDeserializer {
 
+    private final NFCompressedGraphPointersDeserializer pointersDeserializer = new NFCompressedGraphPointersDeserializer();
+
     public NFCompressedGraph deserialize(InputStream is) throws IOException {
         DataInputStream dis = new DataInputStream(is);
 
         NFGraphSpec spec = deserializeSpec(dis);
         NFGraphModelHolder models = deserializeModels(dis);
-        NFCompressedGraphPointers pointers = deserializePointers(dis);
+        NFCompressedGraphPointers pointers = pointersDeserializer.deserializePointers(dis);
         long dataLength = deserializeDataLength(dis);
         ByteData data = deserializeData(dis, dataLength);
 
@@ -86,45 +87,6 @@ public class NFCompressedGraphDeserializer {
         }
 
         return modelHolder;
-    }
-
-    private NFCompressedGraphPointers deserializePointers(DataInputStream dis) throws IOException {
-        int numTypes = dis.readInt();
-        NFCompressedGraphPointers pointers = new NFCompressedGraphPointers();
-
-        for(int i=0;i<numTypes;i++) {
-            String nodeType = dis.readUTF();
-
-            pointers.addPointers(nodeType, deserializePointerArray(dis));
-        }
-
-        return pointers;
-    }
-
-    private long[] deserializePointerArray(DataInputStream dis) throws IOException {
-        int numNodes = dis.readInt();
-        int numBytes = dis.readInt();
-
-        byte data[] = new byte[numBytes];
-        long pointers[] = new long[numNodes];
-
-        dis.readFully(data);
-
-        ByteArrayReader reader = new ByteArrayReader(new SimpleByteArray(data), 0);
-
-        long currentPointer = 0;
-
-        for(int i=0;i<numNodes;i++) {
-            int vInt = reader.readVInt();
-            if(vInt == -1) {
-                pointers[i] = -1;
-            } else {
-                currentPointer += vInt;
-                pointers[i] = currentPointer;
-            }
-        }
-
-        return pointers;
     }
 
     /// Backwards compatibility:  If the data length is greater than Integer.MAX_VALUE, then
