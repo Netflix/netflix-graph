@@ -28,6 +28,7 @@ import com.netflix.nfgraph.spec.NFGraphSpec;
 import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
 
+
 /**
  * An </code>NFBuildGraph</code> is used to create a new graph.  This representation of the graph data is not especially memory-efficient,
  * and is intended to exist only for a short time while the {@link NFGraph} is being populated.<p/>
@@ -85,12 +86,38 @@ public class NFBuildGraph extends NFGraph {
      * by the <code>viaProperty</code>.
      */
     public void addConnection(String connectionModel, String nodeType, int fromOrdinal, String viaPropertyName, int toOrdinal) {
-        NFBuildGraphNode node = nodeCache.getNode(nodeType, fromOrdinal);
+        NFBuildGraphNode fromNode = nodeCache.getNode(nodeType, fromOrdinal);
         NFPropertySpec propertySpec = getPropertySpec(nodeType, viaPropertyName);
         int connectionModelIndex = modelHolder.getModelIndex(connectionModel);
-        node.addConnection(connectionModelIndex, propertySpec, toOrdinal);
-        
+
         NFBuildGraphNode toNode = nodeCache.getNode(propertySpec.getToNodeType(), toOrdinal);
+        addConnection(fromNode, propertySpec, connectionModelIndex, toNode);
+    }
+
+    /**
+     * Returns the list of {@link com.netflix.nfgraph.build.NFBuildGraphNode}s associated with the specified
+     * <code>nodeType</code>.
+     */
+    public NFBuildGraphNodeList getNodes(String nodeType) {
+        return nodeCache.getNodes(nodeType);
+    }
+
+    /**
+     * Creates an {@link com.netflix.nfgraph.build.NFBuildGraphNode} for <code>nodeSpec</code> and <code>ordinal</code>
+     * and adds it to <code>nodes</code>.  If such a node exists in <code>nodes</code>, then that node is returned.
+     */
+    public NFBuildGraphNode getOrCreateNode(NFBuildGraphNodeList nodes, NFNodeSpec nodeSpec, int ordinal) {
+        return nodeCache.getNode(nodes, nodeSpec, ordinal);
+    }
+
+    /**
+     * Add a connection to this graph.  This method is exposed for efficiency purposes.  It is more efficient than
+     * {@code addConnection(String connectionModel, String nodeType, int fromOrdinal, String viaPropertyName, int toOrdinal)}
+     * as it avoids multiple lookups for <code>fromNode</code>, <code>propertySpec</code>, <code>connectionModelIndex</code>
+     * and <code>toNode</code>.
+     */
+    public void addConnection(NFBuildGraphNode fromNode, NFPropertySpec propertySpec, int connectionModelIndex, NFBuildGraphNode toNode) {
+        fromNode.addConnection(connectionModelIndex, propertySpec, toNode.getOrdinal());
         toNode.incrementNumIncomingConnections();
     }
     
@@ -101,13 +128,18 @@ public class NFBuildGraph extends NFGraph {
      * prior to adding any connections.<p/>
      * 
      * This operation is not necessary, but may make building the graph more efficient.
+     *
+     * Returns the "model index" used to identify the connection model internally.  Passing this to
+     * the various {@code addConnection()} may offer a performance boost while building the graph.
      */
-    public void addConnectionModel(String connectionModel) {
-    	modelHolder.getModelIndex(connectionModel);
+    public int addConnectionModel(String connectionModel) {
+    	return modelHolder.getModelIndex(connectionModel);
     }
-    
-    
-    private NFPropertySpec getPropertySpec(String nodeType, String propertyName) {
+
+    /**
+     * Returns the {@link NFPropertySpec} associated with the supplied node type and property name.
+     */
+    public NFPropertySpec getPropertySpec(String nodeType, String propertyName) {
         NFNodeSpec nodeSpec = graphSpec.getNodeSpec(nodeType);
         NFPropertySpec propertySpec = nodeSpec.getPropertySpec(propertyName);
         return propertySpec;

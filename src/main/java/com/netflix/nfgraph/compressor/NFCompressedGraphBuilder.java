@@ -22,6 +22,7 @@ import com.netflix.nfgraph.OrdinalSet;
 import com.netflix.nfgraph.build.NFBuildGraph;
 import com.netflix.nfgraph.build.NFBuildGraphNode;
 import com.netflix.nfgraph.build.NFBuildGraphNodeCache;
+import com.netflix.nfgraph.build.NFBuildGraphNodeList;
 import com.netflix.nfgraph.compressed.NFCompressedGraph;
 import com.netflix.nfgraph.compressed.NFCompressedGraphLongPointers;
 import com.netflix.nfgraph.spec.NFGraphSpec;
@@ -29,7 +30,6 @@ import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
 import com.netflix.nfgraph.util.ByteArrayBuffer;
 
-import java.util.List;
 
 /**
  * <code>NFCompressedGraphBuilder</code> is used by {@link NFBuildGraph#compress()} to create an {@link NFCompressedGraph}.<p/>
@@ -70,14 +70,14 @@ public class NFCompressedGraphBuilder {
 
     public NFCompressedGraph buildGraph() {
     	for(String nodeType : graphSpec.getNodeTypes()) {
-    		List<NFBuildGraphNode> nodeOrdinals = buildGraphNodeCache.getNodes(nodeType);
+    		NFBuildGraphNodeList nodeOrdinals = buildGraphNodeCache.getNodes(nodeType);
     		addNodeType(nodeType, nodeOrdinals);
     	}
 
         return new NFCompressedGraph(graphSpec, modelHolder, graphBuffer.getData(), graphBuffer.length(), compressedGraphPointers);
     }
 
-    private void addNodeType(String nodeType, List<NFBuildGraphNode> nodes) {
+    private void addNodeType(String nodeType, NFBuildGraphNodeList nodes) {
         NFNodeSpec nodeSpec = graphSpec.getNodeSpec(nodeType);
         long ordinalPointers[] = new long[nodes.size()];
 

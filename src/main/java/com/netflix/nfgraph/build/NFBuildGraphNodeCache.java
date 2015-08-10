@@ -17,29 +17,32 @@
 
 package com.netflix.nfgraph.build;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.netflix.nfgraph.NFGraphModelHolder;
 import com.netflix.nfgraph.spec.NFGraphSpec;
+import com.netflix.nfgraph.spec.NFNodeSpec;
 
 public class NFBuildGraphNodeCache {
 
 	private final NFGraphSpec graphSpec;
 	private final NFGraphModelHolder buildGraphModelHolder;
-    private final Map<String, List<NFBuildGraphNode>> nodesByOrdinal;
+    private final Map<String,NFBuildGraphNodeList> nodesByOrdinal;
 
     NFBuildGraphNodeCache(NFGraphSpec graphSpec, NFGraphModelHolder modelHolder) {
-        this.nodesByOrdinal = new HashMap<String, List<NFBuildGraphNode>>();
+        this.nodesByOrdinal = new HashMap<String, NFBuildGraphNodeList>();
         this.graphSpec = graphSpec;
         this.buildGraphModelHolder = modelHolder;
     }
 
     NFBuildGraphNode getNode(String nodeType, int ordinal) {
-        List<NFBuildGraphNode> nodes = getNodes(nodeType);
+        NFBuildGraphNodeList nodes = getNodes(nodeType);
+        NFNodeSpec nodeSpec = graphSpec.getNodeSpec(nodeType);
+        return getNode(nodes, nodeSpec, ordinal);
+    }
 
+    NFBuildGraphNode getNode(NFBuildGraphNodeList nodes, NFNodeSpec nodeSpec, int ordinal) {
         while (ordinal >= nodes.size()) {
             nodes.add(null);
         }
@@ -47,21 +50,19 @@ public class NFBuildGraphNodeCache {
         NFBuildGraphNode node = nodes.get(ordinal);
 
         if (node == null) {
-            node = new NFBuildGraphNode(graphSpec.getNodeSpec(nodeType), ordinal, buildGraphModelHolder.size());
+            node = new NFBuildGraphNode(nodeSpec, ordinal, buildGraphModelHolder.size());
             nodes.set(ordinal, node);
         }
 
         return node;
     }
 
-    public int numNodes(String nodeType) {
-        return getNodes(nodeType).size();
-    }
+    public int numNodes(String nodeType) { return getNodes(nodeType).size(); }
     
-    public List<NFBuildGraphNode> getNodes(String nodeType) {
-        List<NFBuildGraphNode> nodes = nodesByOrdinal.get(nodeType);
+    public NFBuildGraphNodeList getNodes(String nodeType) {
+        NFBuildGraphNodeList nodes = nodesByOrdinal.get(nodeType);
         if (nodes == null) {
-            nodes = new ArrayList<NFBuildGraphNode>();
+            nodes = new NFBuildGraphNodeList();
             nodesByOrdinal.put(nodeType, nodes);
         }
         return nodes;
