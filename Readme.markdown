@@ -43,7 +43,7 @@ Javadocs are available [here](http://netflix.github.com/netflix-graph/javadoc).
 Build
 -----
 
-NetflixGraph is built via Gradle (www.gradle.org). To build from the command line:
+NetflixGraph is built via [Gradle](www.gradle.org). To build from the command line:
 
     ./gradlew build
 
