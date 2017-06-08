@@ -14,13 +14,13 @@ The NetflixGraph binaries are published to Maven Central.
 
 |GroupID/Org|ArtifactID/Name|Latest Version|
 | --------- | ------------- |--------------|
-|com.netflix.nfgraph|netflix-graph|1.5|
+|com.netflix.nfgraph|netflix-graph|1.5.2|
 
         ...	
         <dependency>
         	<groupId>com.netflix.nfgraph</groupId>
         	<artifactId>netflix-graph</artifactId>
-        	<version>1.01</version>
+                <version>1.5.2</version>
         </dependency>
         ...
 
