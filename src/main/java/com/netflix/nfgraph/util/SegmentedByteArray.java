@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014 Netflix, Inc.
+ *  Copyright 2014-2017 Netflix, Inc.
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -23,13 +23,19 @@ import java.util.Arrays;
 
 public class SegmentedByteArray implements ByteData {
     private byte[][] segments;
+    private final ByteSegmentPool memoryPool;
     private final int log2OfSegmentSize;
     private final int bitmask;
     private long length;
 
     public SegmentedByteArray(int log2OfSegmentSize) {
+        this(new ByteSegmentPool(log2OfSegmentSize));
+    }
+    
+    public SegmentedByteArray(ByteSegmentPool memoryPool) {
         this.segments = new byte[2][];
-        this.log2OfSegmentSize = log2OfSegmentSize;
+        this.memoryPool = memoryPool;
+        this.log2OfSegmentSize = memoryPool.getLog2OfSegmentSize();
         this.bitmask = (1 << log2OfSegmentSize) - 1;
         this.length = 0;
     }
@@ -157,7 +163,7 @@ public class SegmentedByteArray implements ByteData {
         long numSegmentsPopulated = length >> log2OfSegmentSize;
 
         for(long i=numSegmentsPopulated; i <= segmentIndex; i++) {
-            segments[(int)i] = new byte[1 << log2OfSegmentSize];
+            segments[(int)i] = memoryPool.getSegment();
             length += 1 << log2OfSegmentSize;
         }
     }
@@ -165,6 +171,15 @@ public class SegmentedByteArray implements ByteData {
     @Override
     public long length() {
         return length;
+    }
+    
+    /**
+     * Note that this is NOT thread safe.
+     */
+    public void destroy() {
+        for(byte[] segment : segments) {
+            memoryPool.returnSegment(segment);
+        }
     }
 
 }

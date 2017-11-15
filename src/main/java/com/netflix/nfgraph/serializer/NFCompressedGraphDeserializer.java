@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Netflix, Inc.
+ *  Copyright 2013-2017 Netflix, Inc.
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import com.netflix.nfgraph.spec.NFGraphSpec;
 import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
 import com.netflix.nfgraph.util.ByteData;
+import com.netflix.nfgraph.util.ByteSegmentPool;
 import com.netflix.nfgraph.util.SegmentedByteArray;
 import com.netflix.nfgraph.util.SimpleByteArray;
 
@@ -41,13 +42,17 @@ public class NFCompressedGraphDeserializer {
     private final NFCompressedGraphPointersDeserializer pointersDeserializer = new NFCompressedGraphPointersDeserializer();
 
     public NFCompressedGraph deserialize(InputStream is) throws IOException {
+        return deserialize(is, null);
+    }
+    
+    public NFCompressedGraph deserialize(InputStream is, ByteSegmentPool byteSegmentPool) throws IOException {
         DataInputStream dis = new DataInputStream(is);
 
         NFGraphSpec spec = deserializeSpec(dis);
         NFGraphModelHolder models = deserializeModels(dis);
         NFCompressedGraphPointers pointers = pointersDeserializer.deserializePointers(dis);
         long dataLength = deserializeDataLength(dis);
-        ByteData data = deserializeData(dis, dataLength);
+        ByteData data = deserializeData(dis, dataLength, byteSegmentPool);
 
         return new NFCompressedGraph(spec, models, data, dataLength, pointers);
     }
@@ -99,9 +104,9 @@ public class NFCompressedGraphDeserializer {
         return dataLength;
     }
 
-    private ByteData deserializeData(DataInputStream dis, long dataLength) throws IOException {
-        if(dataLength >= 0x20000000) {
-            SegmentedByteArray data = new SegmentedByteArray(14);
+    private ByteData deserializeData(DataInputStream dis, long dataLength, ByteSegmentPool memoryPool) throws IOException {
+        if(dataLength >= 0x20000000 || memoryPool != null) {
+            SegmentedByteArray data = memoryPool == null ? new SegmentedByteArray(14) : new SegmentedByteArray(memoryPool);
             data.readFrom(dis, dataLength);
             return data;
         } else {
