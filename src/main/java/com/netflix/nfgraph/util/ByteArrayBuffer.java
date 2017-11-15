@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Netflix, Inc.
+ *  Copyright 2013-2017 Netflix, Inc.
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public class ByteArrayBuffer {
     private long pointer;
 
     public ByteArrayBuffer() {
-        this.data = new SegmentedByteArray(14);
+        this.data = new SegmentedByteArray(new ByteSegmentPool(14));
         this.pointer = 0;
     }
 

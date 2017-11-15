@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Netflix, Inc.
+ *  Copyright 2013-2017 Netflix, Inc.
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
 import com.netflix.nfgraph.util.ByteArrayReader;
 import com.netflix.nfgraph.util.ByteData;
+import com.netflix.nfgraph.util.ByteSegmentPool;
+import com.netflix.nfgraph.util.SegmentedByteArray;
 
 /**
  * A read-only, memory-efficient implementation of an {@link NFGraph}.  The connections for all nodes in the graph
@@ -236,8 +238,31 @@ public class NFCompressedGraph extends NFGraph {
     }
 
     public static NFCompressedGraph readFrom(InputStream is) throws IOException {
+        return readFrom(is, null);
+    }
+    
+    /**
+     * When using a {@link ByteSegmentPool}, this method will borrow arrays used to construct the NFCompressedGraph from that pool.
+     * <p>
+     * Note that because the {@link ByteSegmentPool} is NOT thread-safe, this this call is also NOT thread-safe.
+     * It is up to implementations to ensure that only a single update thread
+     * is accessing this memory pool at any given time.
+     */
+    public static NFCompressedGraph readFrom(InputStream is, ByteSegmentPool memoryPool) throws IOException {
         NFCompressedGraphDeserializer deserializer = new NFCompressedGraphDeserializer();
-        return deserializer.deserialize(is);
+        return deserializer.deserialize(is, memoryPool);
+    }
+    
+    /**
+     * When using a {@link ByteSegmentPool}, this method will return all borrowed arrays back to that pool.
+     * <p>
+     * Note that because the {@link ByteSegmentPool} is NOT thread-safe, this this call is also NOT thread-safe.
+     * It is up to implementations to ensure that only a single update thread
+     * is accessing this memory pool at any given time.
+     */
+    public void destroy() {
+        if(data instanceof SegmentedByteArray)
+            ((SegmentedByteArray) data).destroy();
     }
 
 }
