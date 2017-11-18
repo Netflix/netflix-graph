@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * A <code>ByteArrayBuffer</code> is used by the {@link NFCompressedGraphBuilder} to write data to a byte array.<p/>
+ * A <code>ByteArrayBuffer</code> is used by the {@link NFCompressedGraphBuilder} to write data to a byte array.<p>
  *
  * It is unlikely that this class will need to be used externally.
  */

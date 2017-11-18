@@ -22,7 +22,7 @@ import com.netflix.nfgraph.compressed.CompactOrdinalIterator;
 import com.netflix.nfgraph.compressed.HashSetOrdinalIterator;
 
 /**
- * <code>OrdinalIterator</code> is the interface used to iterate over a set of connections.<p/>
+ * <code>OrdinalIterator</code> is the interface used to iterate over a set of connections.<p>
  * 
  * An <code>OrdinalIterator</code> may be obtained for a set of connections directly from an {@link NFGraph} or via an {@link OrdinalSet}
  * obtained from an {@link NFGraph}.
@@ -50,7 +50,7 @@ public interface OrdinalIterator {
     public void reset();
     
     /**
-     * Obtain a copy of this <copy>OrdinalIterator</code>.  The returned <code>OrdinalIterator</code> will be reset to the beginning of the set.
+     * Obtain a copy of this <code>OrdinalIterator</code>.  The returned <code>OrdinalIterator</code> will be reset to the beginning of the set.
      */
     public OrdinalIterator copy();
     

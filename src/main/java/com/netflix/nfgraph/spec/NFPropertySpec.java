@@ -23,11 +23,11 @@ import com.netflix.nfgraph.compressed.CompactOrdinalSet;
 import com.netflix.nfgraph.compressed.NFCompressedGraph;
 
 /**
- * This class defines a specification for a single property.<p/>
+ * This class defines a specification for a single property.<p>
  * 
- * The recommended interface for creating a property is to instantiate with the flag method below.<p/>
+ * The recommended interface for creating a property is to instantiate with the flag method below.<p>
  * 
- * By default, an <code>NFPropertySpec</code> is {@link #GLOBAL}, {@link #MULTIPLE}, and {@link #COMPACT}.<p/>
+ * By default, an <code>NFPropertySpec</code> is {@link #GLOBAL}, {@link #MULTIPLE}, and {@link #COMPACT}.<p>
  * 
  * <pre>
  * {@code
@@ -92,7 +92,7 @@ public class NFPropertySpec {
      * 
      * @param name the name of the property.
      * @param toNodeType the node type to which this property connects
-     * @param flags a bitwise-or of the various flags defined as constants in {@link NFPropertySpec}.<br/>For example, a global, multiple, compact property would take the value <code>NFPropertySpec.GLOBAL | NFPropertySpec.MULTIPLE | NFPropertySpec.COMPACT</code> 
+     * @param flags a bitwise-or of the various flags defined as constants in {@link NFPropertySpec}.<br>For example, a global, multiple, compact property would take the value <code>NFPropertySpec.GLOBAL | NFPropertySpec.MULTIPLE | NFPropertySpec.COMPACT</code>
      * 
      */
     public NFPropertySpec(String name, String toNodeType, int flags) {

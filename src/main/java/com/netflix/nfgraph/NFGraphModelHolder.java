@@ -22,14 +22,14 @@ import java.util.Iterator;
 import com.netflix.nfgraph.util.OrdinalMap;
 
 /**
- * <code>NFGraphModelHolder</code> maintains an ordering over the models in a given NFGraph.<p/>
+ * <code>NFGraphModelHolder</code> maintains an ordering over the models in a given NFGraph.<p>
  * 
  * An {@link NFGraph} may contain one or more "connection models".  A "connection model" is a grouping of the set of connections
- * between nodes in the graph.<p/>
+ * between nodes in the graph.<p>
  * 
  * Connections added for a connection model will be visible only for that model.  Use of multiple connection models will 
  * add a minimum of one byte per model-specific connection set per node.  As a result, this feature should be used only 
- * when the number of connection models is and will remain low.<p/>
+ * when the number of connection models is and will remain low.<p>
  * 
  * It is unlikely that this class will need to be used externally.
  */

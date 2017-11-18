@@ -25,16 +25,16 @@ import com.netflix.nfgraph.spec.NFPropertySpec;
 import com.netflix.nfgraph.util.ByteArrayReader;
 
 /**
- * An implementation of {@link OrdinalSet}, returned for connections represented as variable-byte deltas in an {@link NFCompressedGraph}.<p/>
+ * An implementation of {@link OrdinalSet}, returned for connections represented as variable-byte deltas in an {@link NFCompressedGraph}.<p>
  * 
  * A variable-byte delta representation contains between one and five bytes per connection.  
- * The ordinals in the set are sorted ascending, then encoded as the difference between each ordinal and the last ordinal.<p/>
+ * The ordinals in the set are sorted ascending, then encoded as the difference between each ordinal and the last ordinal.<p>
  * 
- * For example, the values [ 7, 11, 13, 21 ] will be encoded as [ 7, 4, 2, 8 ].<p/>
+ * For example, the values [ 7, 11, 13, 21 ] will be encoded as [ 7, 4, 2, 8 ].<p>
  * 
- * This is done because smaller values can be represented in fewer bytes.<p/>
+ * This is done because smaller values can be represented in fewer bytes.<p>
  *
- * Because each value can only be derived using the previous value, <code>contains()</code> is an <code>O(n)</code> operation.<p/>
+ * Because each value can only be derived using the previous value, <code>contains()</code> is an <code>O(n)</code> operation.<p>
  * 
  * This representation for a connection set can be configured for an {@link NFPropertySpec} using {@link NFPropertySpec#COMPACT}.
  * 

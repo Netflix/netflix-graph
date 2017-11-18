@@ -26,7 +26,7 @@ import com.netflix.nfgraph.util.ByteArrayBuffer;
 import com.netflix.nfgraph.util.Mixer;
 
 /**
- * This class is used by {@link NFCompressedGraphBuilder} to write sets of ordinals represented as as variable-byte hashed integer arrays.<p/>
+ * This class is used by {@link NFCompressedGraphBuilder} to write sets of ordinals represented as as variable-byte hashed integer arrays.<p>
  * 
  * It is unlikely that this class will need to be used externally.
  * 

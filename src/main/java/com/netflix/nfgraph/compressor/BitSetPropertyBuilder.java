@@ -25,7 +25,7 @@ import com.netflix.nfgraph.compressed.BitSetOrdinalSet;
 import com.netflix.nfgraph.util.ByteArrayBuffer;
 
 /**
- * This class is used by {@link NFCompressedGraphBuilder} to write sets of ordinals represented with bit sets.<p/>
+ * This class is used by {@link NFCompressedGraphBuilder} to write sets of ordinals represented with bit sets.<p>
  * 
  * It is unlikely that this class will need to be used externally.
  * 

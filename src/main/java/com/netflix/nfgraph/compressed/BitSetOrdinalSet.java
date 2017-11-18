@@ -24,13 +24,13 @@ import com.netflix.nfgraph.spec.NFPropertySpec;
 import com.netflix.nfgraph.util.ByteArrayReader;
 
 /**
- * An implementation of {@link OrdinalSet}, returned for connections represented as a bit set in an {@link NFCompressedGraph}.<p/>
+ * An implementation of {@link OrdinalSet}, returned for connections represented as a bit set in an {@link NFCompressedGraph}.<p>
  *
  * A bit set representation contains a single bit per ordinal in the type to which the connections point.  If the bit at the
- * position for a given ordinal is set, then there is a connection to that ordinal in this set.<p/>
+ * position for a given ordinal is set, then there is a connection to that ordinal in this set.<p>
  *
  * Because determining membership in a set requires only checking whether the bit at a given position is set, <code>contains()</code>
- * is an <code>O(1)</code> operation.<p/>
+ * is an <code>O(1)</code> operation.<p>
  *
  * This representation will automatically be chosen for a set by the {@link NFCompressedGraphBuilder} when it requires fewer bytes than
  * the configured representation (either {@link NFPropertySpec#COMPACT} or {@link NFPropertySpec#HASH}).

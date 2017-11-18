@@ -25,28 +25,28 @@ import com.netflix.nfgraph.util.OrdinalMap;
 /**
  * <code>NFGraph</code> represents a directed graph and is the base class for the two flavors of NetflixGraph 
  * ({@link NFBuildGraph} and {@link NFCompressedGraph}).  It defines the operations for retrieving connections 
- * in the graph, given some node and property.<p/>
+ * in the graph, given some node and property.<p>
  * 
  * In the NetflixGraph library, each node in your graph is expected to be uniquely represented as a "type" and "ordinal".  
  * Each "type" will be referred to by some String.  An "ordinal", in this sense, is a number that uniquely defines the node 
  * given its type.  If a type of node has "n" instances, then each instance should be representable by some unique value 
  * from 0 through (n-1).  If nodes in the graph are represented as Objects externally to the NetflixGraph library, then 
  * developers may find it helpful to use an {@link OrdinalMap} for each type to create and maintain a mapping between objects 
- * and their ordinals.  The {@link OrdinalMap} has been optimized with this use case in mind.  <p/>
+ * and their ordinals.  The {@link OrdinalMap} has been optimized with this use case in mind.  <p>
  * 
- * Use of the NFGraph is expected to generally follow some lifecycle:<p/>
+ * Use of the NFGraph is expected to generally follow some lifecycle:<p>
  * <ol>
  * <li>Define an {@link NFGraphSpec}, which serves as the schema for the graph data.</li>
  * <li>Instantiate an {@link NFBuildGraph}, then populate it with connections.</li>
  * <li>Compress the {@link NFBuildGraph}, which will return a representation of the data as an {@link NFCompressedGraph}.</li>
  * <li>Serialize the {@link NFCompressedGraph} to a stream.  Netflix, for example, has a use case which streams this graph to Amazon Web Service's S3.</li>
  * <li>Deserialize the stream where the compact in-memory representation of the graph data is necessary.</li>
- * </ol><p/>
+ * </ol><p>
  * 
  * In some cases, the location where the compact in-memory representation is necessary is the same as the location where this
- * representation will be built.  In these cases, steps (4) and (5) above will be omitted.<p/>
+ * representation will be built.  In these cases, steps (4) and (5) above will be omitted.<p>
  * 
- * If there will be a producer of this graph and one or more consumers, then your producer code will resemble:<p/>
+ * If there will be a producer of this graph and one or more consumers, then your producer code will resemble:<p>
  * 
  * <pre>
  * {@code
@@ -66,7 +66,7 @@ import com.netflix.nfgraph.util.OrdinalMap;
  * }
  * </pre>
  * 
- * And your consumer code will resemble:<p/>
+ * And your consumer code will resemble:<p>
  * 
  * <pre>
  * {@code

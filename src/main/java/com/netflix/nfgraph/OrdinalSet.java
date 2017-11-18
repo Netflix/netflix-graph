@@ -26,7 +26,7 @@ import com.netflix.nfgraph.compressed.CompactOrdinalSet;
 import com.netflix.nfgraph.compressed.HashSetOrdinalSet;
 
 /**
- * <code>OrdinalSet</code> is the interface used to represent a set of connections.<p/>
+ * <code>OrdinalSet</code> is the interface used to represent a set of connections.<p>
  * 
  * An <code>OrdinalSet</code> is obtained directly from an {@link NFGraph}.
  * 
@@ -37,19 +37,19 @@ public abstract class OrdinalSet {
 
     /**
      * Returns <code>true</code> when the specified value is contained in this set.  Depending on the implementation,
-     * this operation will have one of two performance characteristics:<p/>
+     * this operation will have one of two performance characteristics:<p>
      * 
-     * <code>O(1)</code> for {@link HashSetOrdinalSet} and {@link BitSetOrdinalSet}<br/>
+     * <code>O(1)</code> for {@link HashSetOrdinalSet} and {@link BitSetOrdinalSet}<br>
      * <code>O(n)</code> for {@link CompactOrdinalSet} and {@link NFBuildGraphOrdinalSet}
      */
     public abstract boolean contains(int value);
 	
     /**
      * Returns <code>true</code> when all specified values are contained in this set.  Depending on the implementation,
-     * this operation will have one of two performance characteristics:<p/>
+     * this operation will have one of two performance characteristics:<p>
      * 
-     * <code>O(m)</code> for {@link HashSetOrdinalSet} and {@link BitSetOrdinalSet}, where <code>m</code> is the number of specified elements.<br/>
-     * <code>O(n)</code> for {@link CompactOrdinalSet}, where <code>n</code> is the number of elements in the set.<br/>
+     * <code>O(m)</code> for {@link HashSetOrdinalSet} and {@link BitSetOrdinalSet}, where <code>m</code> is the number of specified elements.<br>
+     * <code>O(n)</code> for {@link CompactOrdinalSet}, where <code>n</code> is the number of elements in the set.<br>
      * <code>O(n * m)</code> for {@link NFBuildGraphOrdinalSet}.
      */
 	public boolean containsAll(int... values) {

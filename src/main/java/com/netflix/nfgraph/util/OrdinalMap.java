@@ -22,13 +22,13 @@ import java.util.Iterator;
 
 /**
  * An <code>OrdinalMap</code> will generate and maintain a mapping between objects added and an integer value between 
- * 0 and n, where n is the number of objects in the map.<p/>
+ * 0 and n, where n is the number of objects in the map.<p>
  * 
- * The values mapped to the objects will be the order in which the objects are inserted.<p/>
+ * The values mapped to the objects will be the order in which the objects are inserted.<p>
  * 
- * The <code>OrdinalMap</code> is memory-efficient and can retrieve an object given an ordinal, or an ordinal given an object, both in <code>O(1)</code> time.<p/>
+ * The <code>OrdinalMap</code> is memory-efficient and can retrieve an object given an ordinal, or an ordinal given an object, both in <code>O(1)</code> time.<p>
  *
- * If, for example, some application refers to graph nodes as Strings, the OrdinalMap can be used as follows:<p/>
+ * If, for example, some application refers to graph nodes as Strings, the OrdinalMap can be used as follows:<p>
  * 
  * <pre>
  * {@code

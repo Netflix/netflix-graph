@@ -22,7 +22,7 @@ import com.netflix.nfgraph.OrdinalSet;
 import com.netflix.nfgraph.compressed.NFCompressedGraph;
 
 /**
- * Used by the {@link NFCompressedGraph}, and various {@link OrdinalSet} and {@link OrdinalIterator} implementations to read the encoded graph data.<p/>
+ * Used by the {@link NFCompressedGraph}, and various {@link OrdinalSet} and {@link OrdinalIterator} implementations to read the encoded graph data.<p>
  *
  * It is unlikely that this class will be required externally.
  */

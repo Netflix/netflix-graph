@@ -30,11 +30,11 @@ import com.netflix.nfgraph.spec.NFPropertySpec;
 
 
 /**
- * An </code>NFBuildGraph</code> is used to create a new graph.  This representation of the graph data is not especially memory-efficient,
- * and is intended to exist only for a short time while the {@link NFGraph} is being populated.<p/>
+ * An <code>NFBuildGraph</code> is used to create a new graph.  This representation of the graph data is not especially memory-efficient,
+ * and is intended to exist only for a short time while the {@link NFGraph} is being populated.<p>
  * 
  * Once the graph is completely populated, it is expected that this <code>NFBuildGraph</code> will be exchanged for a memory-efficient, 
- * read-only {@link NFCompressedGraph} via the <code>compress()</code> method.<p/>
+ * read-only {@link NFCompressedGraph} via the <code>compress()</code> method.<p>
  * 
  * See {@link NFGraph} for an example of code which creates and populates an <code>NFBuildGraph</code>
  * 
@@ -122,10 +122,10 @@ public class NFBuildGraph extends NFGraph {
     }
     
     /**
-     * Add a connection model, identified by the parameter <code>connectionModel</code> to this graph.<p/>
+     * Add a connection model, identified by the parameter <code>connectionModel</code> to this graph.<p>
      * 
      * Building the graph may be much more efficient if each connection model is added to the graph with this method 
-     * prior to adding any connections.<p/>
+     * prior to adding any connections.<p>
      * 
      * This operation is not necessary, but may make building the graph more efficient.
      *

@@ -27,11 +27,11 @@ import com.netflix.nfgraph.exception.NFGraphException;
 
 /**
  * An <code>NFGraphSpec</code> defines the schema for a graph.  It contains a mapping of node type 
- * name to {@link NFNodeSpec}s.<p/>
+ * name to {@link NFNodeSpec}s.<p>
  *
  * The example code below will create two node types "a" and "b".  An "a" node can be connected to "b" nodes 
  * via the properties "a-to-one-b" and/or "a-to-many-b".  A "b" node can be connected to "a" nodes via the property
- * "b-to-many-a".<p/>
+ * "b-to-many-a".<p>
  * 
  * <pre>
  * {@code
