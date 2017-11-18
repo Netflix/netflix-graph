@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * This class is used by {@link NFCompressedGraph#readFrom(InputStream)}.<p/>
+ * This class is used by {@link NFCompressedGraph#readFrom(InputStream)}.<p>
  *
  * It is unlikely that this class will need to be used externally.
  */

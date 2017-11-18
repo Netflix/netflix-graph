@@ -24,7 +24,7 @@ import com.netflix.nfgraph.compressed.CompactOrdinalSet;
 import com.netflix.nfgraph.util.ByteArrayBuffer;
 
 /**
- * This class is used by {@link NFCompressedGraphBuilder} to write sets of ordinals represented as variable-byte deltas.<p/>
+ * This class is used by {@link NFCompressedGraphBuilder} to write sets of ordinals represented as variable-byte deltas.<p>
  * 
  * It is unlikely that this class will need to be used externally.
  * 

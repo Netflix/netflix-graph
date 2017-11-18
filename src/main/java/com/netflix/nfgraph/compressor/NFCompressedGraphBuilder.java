@@ -32,7 +32,7 @@ import com.netflix.nfgraph.util.ByteArrayBuffer;
 
 
 /**
- * <code>NFCompressedGraphBuilder</code> is used by {@link NFBuildGraph#compress()} to create an {@link NFCompressedGraph}.<p/>
+ * <code>NFCompressedGraphBuilder</code> is used by {@link NFBuildGraph#compress()} to create an {@link NFCompressedGraph}.<p>
  *
  * It is unlikely that this class will need to be used externally.
  */

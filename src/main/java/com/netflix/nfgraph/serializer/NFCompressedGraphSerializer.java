@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * This class is used by {@link NFCompressedGraph#writeTo(OutputStream)}.<p/>
+ * This class is used by {@link NFCompressedGraph#writeTo(OutputStream)}.<p>
  *
  * It is unlikely that this class will need to be used externally.
  */

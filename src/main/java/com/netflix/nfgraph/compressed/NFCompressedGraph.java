@@ -42,7 +42,7 @@ import com.netflix.nfgraph.util.SegmentedByteArray;
 /**
  * A read-only, memory-efficient implementation of an {@link NFGraph}.  The connections for all nodes in the graph
  * are encoded into a single byte array.  The encoding for each set will be specified as either a {@link CompactOrdinalSet} or
- * {@link HashSetOrdinalSet}.  If it is more efficient, the actual encoding will be a {@link BitSetOrdinalSet}.<p/>
+ * {@link HashSetOrdinalSet}.  If it is more efficient, the actual encoding will be a {@link BitSetOrdinalSet}.<p>
  *
  * The offsets into the byte array where connections for each node are encoded are held in the {@link NFCompressedGraphPointers}.
  */

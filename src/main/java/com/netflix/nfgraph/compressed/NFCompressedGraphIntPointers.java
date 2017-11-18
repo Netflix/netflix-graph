@@ -23,10 +23,10 @@ import java.util.Map;
 import com.netflix.nfgraph.exception.NFGraphException;
 
 /**
- * This class holds all of the offsets into the {@link NFCompressedGraph}'s byte array.<p/>
+ * This class holds all of the offsets into the {@link NFCompressedGraph}'s byte array.<p>
  *
  * This class maintains a mapping of type name to int array.  For a given type, the offset in the {@link NFCompressedGraph}'s byte array
- * where the connections for a given node are encoded is equal to the value of the int array for the node's type at the index for the node's ordinal.<p/>
+ * where the connections for a given node are encoded is equal to the value of the int array for the node's type at the index for the node's ordinal.<p>
  *
  * It is unlikely that this class will need to be used externally.
  */
