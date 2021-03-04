@@ -1,5 +1,5 @@
 plugins {
-    id 'nebula.netflixoss' version '4.0.2'
+    id 'nebula.netflixoss' version '9.1.0'
     id 'java'
 }
 
@@ -16,4 +16,3 @@ dependencies {
 }
 
 javadoc.includes << "**/NFGraph.java" << "**/NFBuildGraph.java" << "**/NFCompressedGraph.java" << "**/OrdinalSet.java" << "**/NFBuildGraphOrdinalSet.java" << "**/CompactOrdinalSet.java" << "**/HashSetOrdinalSet.java" << "**/BitSetOrdinalSet.java" << "**/OrdinalIterator.java" << "**/NFBuildGraphOrdinalIterator.java"<< "**/CompactOrdinalIterator.java" << "**/HashSetOrdinalIterator.java" << "**/BitSetOrdinalIterator.java" << "**/NFGraphSpec.java" << "**/NFNodeSpec.java" << "**/NFPropertySpec.java" << "**/OrdinalMap.java" << "**/NFGraphException.java"
- 
