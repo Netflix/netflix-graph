@@ -1,7 +1,7 @@
 language: java
 sudo: false
-jdk: oraclejdk8
-install: true
+jdk: openjdk8
+install: "./gradle/installViaTravis.sh"
 script: "./gradle/buildViaTravis.sh"
 cache:
   directories:
@@ -9,7 +9,9 @@ cache:
   - "$HOME/.gradle/wrapper/"
 env:
   global:
-  - secure: So02z6dbNopwbDG0rP29VjYHwwbnpfQlDUFUQsBxxVXMap7pea9iU/9p4jW1r0Ssq1ikaj9OcpQEX1Au1qBRbgad3nOQQUp4IfvigO5s9dKabdrC/xwhlHTmgyK9DXJ+m0fhF/7fzt2YUFcnDCPZpGmOKmf1XWLap99rPQjuLUw=
-  - secure: jpD2WJ4WmentfDbblD2Fbdaov184JYhOMRAO7mtXVxcayHRXf81bh/G5Yi/oU/UWQRri5Rtikpdays49e2ADIUwwhThXGowEcO/8x79I4kksgSLTmGm3BAtlgf7ry9eOYf4mYqlIoYjDUE9K76j3MCn0q+NTWLYVzqHHkdZg3Rs=
-  - secure: OB3HW1UQe84vTcgDD9uh9nBZ3XYccC+T1dmA+GVr8yi3s6yac+lQTKlR2TtN6ZL0Oe/wrHxs05txEfdo6UF5+7/88rwyWbzpkF26yNqr7D/Omp2pGWqX8lyrsPlg+NGH44ZBT0fb+dTb6BOLCkvsRoON0m7pDYFFUV/Wymy2rKo=
-  - secure: C3OVXe/TrSEmtifk9qRPLCYz3lvSIn9/JXXwW2NhDCzR2UCpz53xr2H2Jxhfg8Vhgrpl/Djk9jPW0L4bAOUnSIi31wR9CgQ8LFSYL0ZolApLSc1hAfr/UBXyU3pZ5LxZFLIr/TamcW7OvbhYEMW1DbEVMGzD4tx8erEnb2335Co=
+  - secure: er8xK6IX10+GZsMZGWHRikRhCicYbHYN+qV3KKyF8rziAN1w5wzGvnNnxkHK0nmXK4xAti9YDW2JVeluVUKF8row4nU+vkYnQKwQ/nxFwshmYj8m1FyGkg6HKylnZHImY4Pywl/7Qbbwo5UJmRHjWzmQh/torcUxBCQNjMymNi4=
+  - secure: Tw75cN1mKYKBrnd0LzmUvLeH7lc6X9NQD7gWEaRmWxX433qA8koRttEVtZG42c9NDjowOdAcE5LXSR5rycnUXKmyfSE2hn3/Sq1GoQIo67LfAlID4HvD1tlbTHTeyIsdiG+SiB1K4BoO1ift9tCORczye8jHNYulE0hbsuqLBGs=
+  - secure: dY78fqO0PFq8ngy7WQmIoV6boxLybHWOcCheQOrfSistL4oiDaQHY8hII8DcIMuzs8fbTVkob43N21W+f3XTvCGj1F75rH2WdSpkpiDo1K86EW4tRxPzrOkJ+MijTKperm2yyW6Bpnjt33958VICJ0nIClzoLCdrUlz5+soJpD4=
+  - secure: NbommU/gc/hPtyLb0tRbxKo8ykmJZcoSza+YOuTKgr+2uRFOUwGz+e+FZXU1GbpjhWMnXUmYdhme0YnLc8uI37ZyOYTdFVL3MNNVvnsw6Kl+fDHrMgQ8PedNy3iQEBpJjcTfUUvQkWtZ3Fyqp/MOeezj2oJDFnrUbbCG0xbwyRI=
+  - secure: N4CCxk0SuZqxIhfDJpcIL4/5n5ep9WxJjYNoxuBZcTjfG44zS/aXn6sKC3DoKKSxI+7KvelrekDAzacdeN5R2EUiTS8BJcgku3tgnWVN6QvSKOhbTBUQupO1pUNpMfGDWwnExITQf3kmFh4U9wdzDxoBmemlqMY+bbHF38KVs7E=
+  - secure: EqpsY5/tkL2QFqfsg6H9e6mHh55PB5kDIc0UcWKfSod4xGEJoVVhAbz1K3ObkoZaDrz71aBNKZ0ZSfxT+olLp6NaY8PssKQWMOSH+f4Yh211Z2+Rjae0WZqsd4ZtVMLobgpTpnWjWZHl820kXhHLGMcW5dNhvQV87yMhTj5PrLU=
