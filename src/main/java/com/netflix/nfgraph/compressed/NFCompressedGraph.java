@@ -155,7 +155,7 @@ public class NFCompressedGraph extends NFGraph {
             return EMPTY_ITERATOR;
 
         if(propertySpec.isHashed()) {
-            reader.setRemainingBytes(1 << size);
+            reader.setRemainingBytes(1 << (size - 1));
             return new HashSetOrdinalIterator(reader);
         }
 
