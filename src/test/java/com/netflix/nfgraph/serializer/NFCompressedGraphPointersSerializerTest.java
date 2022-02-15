@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014 Netflix, Inc.
+ *  Copyright 2014-2022 Netflix, Inc.
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -68,5 +68,28 @@ public class NFCompressedGraphPointersSerializerTest {
 
         Assert.assertTrue(deserialized instanceof NFCompressedGraphLongPointers);
     }
+    
+    @Test
+    public void pointersMightStartGreaterThan2GB() throws IOException {
+        NFCompressedGraphLongPointers pointers = new NFCompressedGraphLongPointers();
+        
+        long bigStartVal = Integer.MAX_VALUE;
+        bigStartVal += 5;
+        
+        long[] ptrs = new long[] { bigStartVal, bigStartVal + 10, bigStartVal + 20, bigStartVal + 100 };
+        pointers.addPointers("Test", ptrs);
+        
+        NFCompressedGraphPointersSerializer serializer = new NFCompressedGraphPointersSerializer(pointers, bigStartVal + 125);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        serializer.serializePointers(new DataOutputStream(baos));
+        
+        NFCompressedGraphPointersDeserializer deserializer = new NFCompressedGraphPointersDeserializer();
+        NFCompressedGraphPointers deserialized = deserializer.deserializePointers(new DataInputStream(new ByteArrayInputStream(baos.toByteArray())));
+        
+        for(int i=0;i<ptrs.length;i++) {
+            Assert.assertEquals(ptrs[i], deserialized.getPointer("Test", i));
+        }
+    }
+    
 
 }

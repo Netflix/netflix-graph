@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013-2017 Netflix, Inc.
+ *  Copyright 2013-2022 Netflix, Inc.
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -58,17 +58,23 @@ public class ByteArrayBuffer {
      * Writes a variable-byte encoded integer to the byte array.
      */
     public void writeVInt(int value) {
-        if(value < 0) {
+        if(value == -1) {
             writeByte((byte)0x80);
             return;
+        } else if(value < 0) {
+            writeByte((byte)(0x80 | ((value >>> 28))));
+            writeByte((byte)(0x80 | ((value >>> 21) & 0x7F)));
+            writeByte((byte)(0x80 | ((value >>> 14) & 0x7F)));
+            writeByte((byte)(0x80 | ((value >>>  7) & 0x7F)));
+            writeByte((byte)(value & 0x7F));
+        } else {
+            if(value > 0x0FFFFFFF) writeByte((byte)(0x80 | ((value >>> 28))));
+            if(value > 0x1FFFFF)   writeByte((byte)(0x80 | ((value >>> 21) & 0x7F)));
+            if(value > 0x3FFF)     writeByte((byte)(0x80 | ((value >>> 14) & 0x7F)));
+            if(value > 0x7F)       writeByte((byte)(0x80 | ((value >>>  7) & 0x7F)));
+
+            writeByte((byte)(value & 0x7F));
         }
-
-        if(value > 0x0FFFFFFF) writeByte((byte)(0x80 | ((value >>> 28))));
-        if(value > 0x1FFFFF)   writeByte((byte)(0x80 | ((value >>> 21) & 0x7F)));
-        if(value > 0x3FFF)     writeByte((byte)(0x80 | ((value >>> 14) & 0x7F)));
-        if(value > 0x7F)       writeByte((byte)(0x80 | ((value >>>  7) & 0x7F)));
-
-        writeByte((byte)(value & 0x7F));
     }
 
     /**
