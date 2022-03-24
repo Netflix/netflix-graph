@@ -70,14 +70,14 @@ public class CompactWeightedOrdinalSet extends WeightedOrdinalSet {
     }
 
     @Override
-    public int[][] asArrayWithWeightAndLabel() {
+    public int[][] asArrayWithWeightAndProperty() {
         int[][] arr = new int[size()][3];
         CompactWeightedOrdinalIterator iter = iterator();
-        int[][] ordinalWithWeight = iter.nextOrdinalWithWeightAndLabel();
+        int[] ordinalWithWeight = iter.nextOrdinalWithWeightAndProperty();
         int i = 0;
-        while (ordinalWithWeight[0][0] != NO_MORE_ORDINALS) {
-            arr[i] = ordinalWithWeight[0];
-            ordinalWithWeight = iter.nextOrdinalWithWeightAndLabel();
+        while (ordinalWithWeight[0] != NO_MORE_ORDINALS) {
+            arr[i] = ordinalWithWeight;
+            ordinalWithWeight = iter.nextOrdinalWithWeightAndProperty();
             i++;
         }
         return arr;
@@ -87,10 +87,10 @@ public class CompactWeightedOrdinalSet extends WeightedOrdinalSet {
     public int[][] asArrayWithWeight() {
         int[][] arr = new int[size()][2];
         CompactWeightedOrdinalIterator iter = iterator();
-        int[][] ordinalWithWeight = iter.nextOrdinalWithWeight();
+        int[] ordinalWithWeight = iter.nextOrdinalWithWeight();
         int i = 0;
-        while (ordinalWithWeight[0][0] != NO_MORE_ORDINALS) {
-            arr[i] = ordinalWithWeight[0];
+        while (ordinalWithWeight[0] != NO_MORE_ORDINALS) {
+            arr[i] = ordinalWithWeight;
             ordinalWithWeight = iter.nextOrdinalWithWeight();
             i++;
         }
@@ -98,14 +98,14 @@ public class CompactWeightedOrdinalSet extends WeightedOrdinalSet {
     }
 
     @Override
-    public int[][] asArrayWithLabel() {
+    public int[][] asArrayWithProperty() {
         int[][] arr = new int[size()][2];
         CompactWeightedOrdinalIterator iter = iterator();
-        int[][] ordinalWithWeight = iter.nextOrdinalWithLabel();
+        int[] ordinalWithWeight = iter.nextOrdinalWithProperty();
         int i = 0;
-        while (ordinalWithWeight[0][0] != NO_MORE_ORDINALS) {
-            arr[i] = ordinalWithWeight[0];
-            ordinalWithWeight = iter.nextOrdinalWithLabel();
+        while (ordinalWithWeight[0] != NO_MORE_ORDINALS) {
+            arr[i] = ordinalWithWeight;
+            ordinalWithWeight = iter.nextOrdinalWithProperty();
             i++;
         }
         return arr;

@@ -6,12 +6,12 @@ import com.netflix.nfgraph.WeightedOrdinalSet;
 public class SingleWeightedOrdinalSet extends WeightedOrdinalSet {
     private final int ordinal;
     private final int weight;
-    private final int label;
+    private final int property;
 
-    public SingleWeightedOrdinalSet(int ordinal, int weight, int label) {
+    public SingleWeightedOrdinalSet(int ordinal, int weight, int property) {
         this.ordinal = ordinal;
         this.weight = weight;
-        this.label = label;
+        this.property = property;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class SingleWeightedOrdinalSet extends WeightedOrdinalSet {
 
     @Override
     public WeightedOrdinalIterator iterator() {
-        return new SingleWeightedOrdinalIterator(ordinal, weight, label);
+        return new SingleWeightedOrdinalIterator(ordinal, weight, property);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class SingleWeightedOrdinalSet extends WeightedOrdinalSet {
     }
 
     @Override
-    public int[][] asArrayWithWeightAndLabel() {
-        return new int[][]{{ordinal, weight, label}};
+    public int[][] asArrayWithWeightAndProperty() {
+        return new int[][]{{ordinal, weight, property}};
     }
 
     @Override
@@ -45,7 +45,7 @@ public class SingleWeightedOrdinalSet extends WeightedOrdinalSet {
     }
 
     @Override
-    public int[][] asArrayWithLabel() {
-        return new int[][]{{ordinal, label}};
+    public int[][] asArrayWithProperty() {
+        return new int[][]{{ordinal, property}};
     }
 }

@@ -6,13 +6,13 @@ import com.netflix.nfgraph.WeightedOrdinalIterator;
 public class SingleWeightedOrdinalIterator extends WeightedOrdinalIterator {
     private final int ordinal;
     private final int weight;
-    private final int label;
+    private final int property;
     private boolean returned;
 
-    public SingleWeightedOrdinalIterator(int ordinal, int weight, int label) {
+    public SingleWeightedOrdinalIterator(int ordinal, int weight, int property) {
         this.ordinal = ordinal;
         this.weight = weight;
-        this.label = label;
+        this.property = property;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SingleWeightedOrdinalIterator extends WeightedOrdinalIterator {
 
     @Override
     public OrdinalIterator copy() {
-        return new SingleWeightedOrdinalIterator(ordinal, weight, label);
+        return new SingleWeightedOrdinalIterator(ordinal, weight, property);
     }
 
     @Override
@@ -40,29 +40,29 @@ public class SingleWeightedOrdinalIterator extends WeightedOrdinalIterator {
     }
 
     @Override
-    public int[][] nextOrdinalWithWeightAndLabel() {
+    public int[] nextOrdinalWithWeightAndProperty() {
         if (returned) {
             return WeightedOrdinalIterator.NO_MORE_DATA;
         }
         returned = true;
-        return new int[][]{{ordinal, weight, label}};
+        return new int[]{ordinal, weight, property};
     }
 
     @Override
-    public int[][] nextOrdinalWithWeight() {
+    public int[] nextOrdinalWithWeight() {
         if (returned) {
             return WeightedOrdinalIterator.NO_MORE_DATA;
         }
         returned = true;
-        return new int[][]{{ordinal, weight}};
+        return new int[]{ordinal, weight};
     }
 
     @Override
-    public int[][] nextOrdinalWithLabel() {
+    public int[] nextOrdinalWithProperty() {
         if (returned) {
             return WeightedOrdinalIterator.NO_MORE_DATA;
         }
         returned = true;
-        return new int[][]{{ordinal, label}};
+        return new int[]{ordinal, property};
     }
 }

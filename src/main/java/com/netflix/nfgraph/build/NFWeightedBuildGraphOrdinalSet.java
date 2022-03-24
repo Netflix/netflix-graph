@@ -34,7 +34,7 @@ public class NFWeightedBuildGraphOrdinalSet extends WeightedOrdinalSet {
     }
 
     @Override
-    public int[][] asArrayWithWeightAndLabel() {
+    public int[][] asArrayWithWeightAndProperty() {
         if (null == ordinalWithWeight) {
             return WeightedOrdinalSet.EMPTY_ORDINAL_2D_ARRAY;
         }
@@ -65,7 +65,7 @@ public class NFWeightedBuildGraphOrdinalSet extends WeightedOrdinalSet {
     }
 
     @Override
-    public int[][] asArrayWithLabel() {
+    public int[][] asArrayWithProperty() {
         if (null == ordinalWithWeight) {
             return WeightedOrdinalSet.EMPTY_ORDINAL_2D_ARRAY;
         }

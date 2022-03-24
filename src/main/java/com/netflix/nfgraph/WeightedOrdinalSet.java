@@ -9,12 +9,12 @@ public abstract class WeightedOrdinalSet extends OrdinalSet {
      */
     public static final WeightedOrdinalSet EMPTY_SET = new WeightedOrdinalSet() {
         @Override
-        public int[][] asArrayWithWeightAndLabel() {
+        public int[][] asArrayWithWeightAndProperty() {
             return EMPTY_ORDINAL_2D_ARRAY;
         }
 
         @Override
-        public int[][] asArrayWithLabel() {
+        public int[][] asArrayWithProperty() {
             return EMPTY_ORDINAL_2D_ARRAY;
         }
 
@@ -46,9 +46,9 @@ public abstract class WeightedOrdinalSet extends OrdinalSet {
 
     public abstract WeightedOrdinalIterator iterator();
 
-    public abstract int[][] asArrayWithWeightAndLabel();
+    public abstract int[][] asArrayWithWeightAndProperty();
 
-    public abstract int[][] asArrayWithLabel();
+    public abstract int[][] asArrayWithProperty();
 
     public abstract int[][] asArrayWithWeight();
 }

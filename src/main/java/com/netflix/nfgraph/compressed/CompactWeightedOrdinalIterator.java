@@ -8,7 +8,7 @@ public class CompactWeightedOrdinalIterator extends WeightedOrdinalIterator {
     private final ByteArrayReader arrayReader;
     private int currentOrdinal = 0;
     private int currentWeight = 0;
-    private int currentLabel = 0;
+    private int currentProperty = 0;
 
     public CompactWeightedOrdinalIterator(ByteArrayReader arrayReader) {
         this.arrayReader = arrayReader;
@@ -30,7 +30,7 @@ public class CompactWeightedOrdinalIterator extends WeightedOrdinalIterator {
         if (delta == -1) {
             return NO_MORE_ORDINALS;
         }
-        currentLabel = delta;
+        currentProperty = delta;
         return currentOrdinal;
     }
 
@@ -39,7 +39,7 @@ public class CompactWeightedOrdinalIterator extends WeightedOrdinalIterator {
         arrayReader.reset();
         currentOrdinal = 0;
         currentWeight = 0;
-        currentLabel = 0;
+        currentProperty = 0;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class CompactWeightedOrdinalIterator extends WeightedOrdinalIterator {
     }
 
     @Override
-    public int[][] nextOrdinalWithWeightAndLabel() {
+    public int[] nextOrdinalWithWeightAndProperty() {
         int delta = arrayReader.readVInt();
         if (delta == -1) {
             return WeightedOrdinalIterator.NO_MORE_DATA;
@@ -68,12 +68,12 @@ public class CompactWeightedOrdinalIterator extends WeightedOrdinalIterator {
         if (delta == -1) {
             return WeightedOrdinalIterator.NO_MORE_DATA;
         }
-        currentLabel = delta;
-        return new int[][]{{currentOrdinal, currentWeight, currentLabel}};
+        currentProperty = delta;
+        return new int[]{currentOrdinal, currentWeight, currentProperty};
     }
 
     @Override
-    public int[][] nextOrdinalWithWeight() {
+    public int[] nextOrdinalWithWeight() {
         int delta = arrayReader.readVInt();
         if (delta == -1) {
             return WeightedOrdinalIterator.NO_MORE_DATA;
@@ -88,12 +88,12 @@ public class CompactWeightedOrdinalIterator extends WeightedOrdinalIterator {
         if (delta == -1) {
             return WeightedOrdinalIterator.NO_MORE_DATA;
         }
-        currentLabel = delta;
-        return new int[][]{{currentOrdinal, currentWeight}};
+        currentProperty = delta;
+        return new int[]{currentOrdinal, currentWeight};
     }
 
     @Override
-    public int[][] nextOrdinalWithLabel() {
+    public int[] nextOrdinalWithProperty() {
         int delta = arrayReader.readVInt();
         if (delta == -1) {
             return WeightedOrdinalIterator.NO_MORE_DATA;
@@ -108,7 +108,7 @@ public class CompactWeightedOrdinalIterator extends WeightedOrdinalIterator {
         if (delta == -1) {
             return WeightedOrdinalIterator.NO_MORE_DATA;
         }
-        currentLabel = delta;
-        return new int[][]{{currentOrdinal, currentLabel}};
+        currentProperty = delta;
+        return new int[]{currentOrdinal, currentProperty};
     }
 }

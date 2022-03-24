@@ -22,25 +22,6 @@ public class NFWeightedBuildGraph extends NFGraph {
     }
 
     /**
-     * Retrieve a single connected ordinal, given the type and ordinal of the originating node, and the property by which this node is connected.
-     *
-     * @return the connected ordinal, or -1 if there is no such ordinal
-     */
-    public int getWeightedConnection(String nodeType, int ordinal, String propertyName) {
-        return getConnection(0, nodeType, ordinal, propertyName);
-    }
-
-    /**
-     * Retrieve a single connected ordinal in a given connection model, given the type and ordinal of the originating node, and the property by which this node is connected.
-     *
-     * @return the connected ordinal, or -1 if there is no such ordinal
-     */
-    public int getWeightedConnection(String connectionModel, String nodeType, int ordinal, String propertyName) {
-        int connectionModelIndex = modelHolder.getModelIndex(connectionModel);
-        return getConnection(connectionModelIndex, nodeType, ordinal, propertyName);
-    }
-
-    /**
      * Retrieve an {@link WeightedOrdinalIterator} over all connected ordinals, given the type and ordinal of the originating node, and the property by which this node is connected.
      *
      * @return an {@link WeightedOrdinalIterator} over all connected ordinals
@@ -104,8 +85,8 @@ public class NFWeightedBuildGraph extends NFGraph {
      * The connection will be via the specified <code>viaProperty</code> in the {@link NFNodeSpec} for the given <code>nodeType</code>.
      * The connection will be to the node identified by the given <code>toOrdinal</code>.  The type of the to node is implied by the <code>viaProperty</code>.
      */
-    public void addConnection(String nodeType, int fromOrdinal, String viaProperty, int toOrdinal, int weight, int label) {
-        addConnection(CONNECTION_MODEL_GLOBAL, nodeType, fromOrdinal, viaProperty, toOrdinal, weight, label);
+    public void addConnection(String nodeType, int fromOrdinal, String viaProperty, int toOrdinal, int weight, int property) {
+        addConnection(CONNECTION_MODEL_GLOBAL, nodeType, fromOrdinal, viaProperty, toOrdinal, weight, property);
     }
 
     /**
@@ -114,16 +95,16 @@ public class NFWeightedBuildGraph extends NFGraph {
      * the given <code>nodeType</code>. The connection will be to the node identified by the given <code>toOrdinal</code>.  The type of the to node is implied
      * by the <code>viaProperty</code>.
      */
-    public void addConnection(String connectionModel, String nodeType, int fromOrdinal, String viaPropertyName, int toOrdinal, int weight, int label) {
-        if (label == WeightedOrdinalIterator.INVALID_LABEL) {
-            throw new IllegalArgumentException(String.format("Invalid label value %d", WeightedOrdinalIterator.INVALID_LABEL));
+    public void addConnection(String connectionModel, String nodeType, int fromOrdinal, String viaPropertyName, int toOrdinal, int weight, int property) {
+        if (property == WeightedOrdinalIterator.INVALID_PROPERTY) {
+            throw new IllegalArgumentException(String.format("Invalid property value %d", WeightedOrdinalIterator.INVALID_PROPERTY));
         }
         NFWeightedBuildGraphNode fromNode = nodeCache.getNode(nodeType, fromOrdinal);
         NFPropertySpec propertySpec = getPropertySpec(nodeType, viaPropertyName);
         int connectionModelIndex = modelHolder.getModelIndex(connectionModel);
         NFWeightedBuildGraphNode toNode = nodeCache.getNode(propertySpec.getToNodeType(), toOrdinal);
 
-        fromNode.addConnection(connectionModelIndex, propertySpec, toNode.getOrdinal(), weight, label);
+        fromNode.addConnection(connectionModelIndex, propertySpec, toNode.getOrdinal(), weight, property);
         fromNode.incrementNumOutgoingConnections();
         toNode.incrementNumIncomingConnections();
     }

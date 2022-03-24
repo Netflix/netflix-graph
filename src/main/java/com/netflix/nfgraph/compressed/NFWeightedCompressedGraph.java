@@ -55,6 +55,10 @@ public class NFWeightedCompressedGraph extends NFGraph {
         return getConnectionIterator(connectionModelIndex, nodeType, ordinal, propertyName);
     }
 
+    public WeightedOrdinalIterator getWeightedConnectionIterator(String nodeType, int ordinal, String propertyName) {
+        return getConnectionIterator(0, nodeType, ordinal, propertyName);
+    }
+
     /**
      * Retrieve an {@link WeightedOrdinalSet} over all connected ordinals, given the type and ordinal of the originating node, and the property by which this node is connected.
      *
@@ -86,7 +90,7 @@ public class NFWeightedCompressedGraph extends NFGraph {
                     int o = reader.readVInt();
                     // read weight
                     reader.readVInt();
-                    // read label
+                    // read property
                     reader.readVInt();
                     return o;
                 }
@@ -198,7 +202,7 @@ public class NFWeightedCompressedGraph extends NFGraph {
             reader.readVInt();
             // read weight
             reader.readVInt();
-            // read label
+            // read property
             reader.readVInt();
             return;
         }

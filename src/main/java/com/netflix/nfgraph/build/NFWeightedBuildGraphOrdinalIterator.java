@@ -19,18 +19,19 @@ public class NFWeightedBuildGraphOrdinalIterator extends WeightedOrdinalIterator
         }
     }
 
-    public NFWeightedBuildGraphOrdinalIterator(Int2LongAVLTreeMap ordinalWithWeight) {
+    private NFWeightedBuildGraphOrdinalIterator(Int2LongAVLTreeMap ordinalWithWeight) {
         this.ordinalWithWeight = ordinalWithWeight;
+        this.iterator = this.ordinalWithWeight.keySet().iterator();
     }
 
     @Override
     public void reset() {
-        this.iterator = this.ordinalWithWeight.keySet().iterator(0);
+        this.iterator = this.ordinalWithWeight.keySet().iterator();
     }
 
     @Override
     public int nextOrdinal() {
-        return nextOrdinalWithWeightInMap()[0][0];
+        return nextOrdinalWithWeightInMap()[0];
     }
 
     @Override
@@ -44,32 +45,32 @@ public class NFWeightedBuildGraphOrdinalIterator extends WeightedOrdinalIterator
     }
 
     @Override
-    public int[][] nextOrdinalWithWeightAndLabel() {
+    public int[] nextOrdinalWithWeightAndProperty() {
         return nextOrdinalWithWeightInMap();
     }
 
     @Override
-    public int[][] nextOrdinalWithWeight() {
-        int[][] ordinalWithWeightAndLabel = nextOrdinalWithWeightInMap();
-        return new int[][]{{ordinalWithWeightAndLabel[0][0], ordinalWithWeightAndLabel[0][1]}};
+    public int[] nextOrdinalWithWeight() {
+        int[] ordinalWithWeightAndProperty = nextOrdinalWithWeightInMap();
+        return new int[]{ordinalWithWeightAndProperty[0], ordinalWithWeightAndProperty[1]};
     }
 
     @Override
-    public int[][] nextOrdinalWithLabel() {
-        int[][] ordinalWithWeightAndLabel = nextOrdinalWithWeightInMap();
-        return new int[][]{{ordinalWithWeightAndLabel[0][0], ordinalWithWeightAndLabel[0][2]}};
+    public int[] nextOrdinalWithProperty() {
+        int[] ordinalWithWeightAndProperty = nextOrdinalWithWeightInMap();
+        return new int[]{ordinalWithWeightAndProperty[0], ordinalWithWeightAndProperty[2]};
     }
 
-    private int[][] nextOrdinalWithWeightInMap() {
+    private int[] nextOrdinalWithWeightInMap() {
         if (iterator == null || !iterator.hasNext()) return WeightedOrdinalIterator.NO_MORE_DATA;
         int ordinal = iterator.nextInt();
         int weight = INVALID_WEIGHTS;
-        int label = INVALID_LABEL;
+        int property = INVALID_PROPERTY;
         if (ordinalWithWeight.containsKey(ordinal)) {
             long value = ordinalWithWeight.get(ordinal);
             weight = ByteUtils.getLeftInt(value);
-            label = ByteUtils.getRightInt(value);
+            property = ByteUtils.getRightInt(value);
         }
-        return new int[][]{{ordinal, weight, label}};
+        return new int[]{ordinal, weight, property};
     }
 }

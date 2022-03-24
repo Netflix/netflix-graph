@@ -106,13 +106,13 @@ public class NFWeightedCompressedGraphBuilder {
         if (connection == null) {
             toBuffer.writeByte((byte) 0x80);
         } else {
-            int[][] ordinalWithWeightAndLabel = connection.asArrayWithWeightAndLabel();
+            int[][] ordinalWithWeightAndProperty = connection.asArrayWithWeightAndProperty();
             // write ordinal
-            toBuffer.writeVInt(ordinalWithWeightAndLabel[0][0]);
+            toBuffer.writeVInt(ordinalWithWeightAndProperty[0][0]);
             // write weight
-            toBuffer.writeVInt(ordinalWithWeightAndLabel[0][1]);
-            // write label
-            toBuffer.writeVInt(ordinalWithWeightAndLabel[0][2]);
+            toBuffer.writeVInt(ordinalWithWeightAndProperty[0][1]);
+            // write property
+            toBuffer.writeVInt(ordinalWithWeightAndProperty[0][2]);
         }
     }
 

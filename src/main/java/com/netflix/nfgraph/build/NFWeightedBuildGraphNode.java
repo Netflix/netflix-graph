@@ -46,7 +46,7 @@ public class NFWeightedBuildGraphNode {
     int getConnectionProperty(int connectionModelIndex, NFPropertySpec spec, int toNode) {
         NFWeightedBuildGraphNodeConnections connections = getConnections(connectionModelIndex);
         if (connections == null) {
-            return WeightedOrdinalIterator.INVALID_LABEL;
+            return WeightedOrdinalIterator.INVALID_PROPERTY;
         }
         return connections.getConnectionProperty(spec, toNode);
     }
@@ -72,9 +72,9 @@ public class NFWeightedBuildGraphNode {
         connections.addConnection(spec, ordinal, weight);
     }
 
-    void addConnection(int connectionModelIndex, NFPropertySpec spec, int ordinal, int weight, int label) {
+    void addConnection(int connectionModelIndex, NFPropertySpec spec, int ordinal, int weight, int property) {
         NFWeightedBuildGraphNodeConnections connections = getOrCreateConnections(connectionModelIndex);
-        connections.addConnection(spec, ordinal, weight, label);
+        connections.addConnection(spec, ordinal, weight, property);
     }
 
     void incrementNumIncomingConnections() {

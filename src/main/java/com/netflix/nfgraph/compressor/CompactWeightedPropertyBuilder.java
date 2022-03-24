@@ -14,7 +14,7 @@ public class CompactWeightedPropertyBuilder {
     }
 
     public void buildProperty(WeightedOrdinalSet ordinalSet) {
-        int[][] connectedOrdinals = ordinalSet.asArrayWithWeightAndLabel();
+        int[][] connectedOrdinals = ordinalSet.asArrayWithWeightAndProperty();
         Arrays.sort(connectedOrdinals, Comparator.comparingInt(o -> o[0]));
         int previousOrdinal = 0;
         for (int[] connectedOrdinal : connectedOrdinals) {
@@ -23,7 +23,7 @@ public class CompactWeightedPropertyBuilder {
             previousOrdinal = connectedOrdinal[0];
             // write weight
             buf.writeVInt(connectedOrdinal[1]);
-            // write label
+            // write property
             buf.writeVInt(connectedOrdinal[2]);
         }
     }
