@@ -20,6 +20,7 @@ package com.netflix.nfgraph.serializer;
 import com.netflix.nfgraph.NFGraphModelHolder;
 import com.netflix.nfgraph.compressed.NFCompressedGraph;
 import com.netflix.nfgraph.compressed.NFCompressedGraphPointers;
+import com.netflix.nfgraph.compressed.NFWeightedCompressedGraph;
 import com.netflix.nfgraph.spec.NFGraphSpec;
 import com.netflix.nfgraph.spec.NFNodeSpec;
 import com.netflix.nfgraph.spec.NFPropertySpec;
@@ -55,6 +56,16 @@ public class NFCompressedGraphDeserializer {
         ByteData data = deserializeData(dis, dataLength, byteSegmentPool);
 
         return new NFCompressedGraph(spec, models, data, dataLength, pointers);
+    }
+
+    public NFWeightedCompressedGraph deserializeWeightedGraph(InputStream is, ByteSegmentPool byteSegmentPool) throws IOException {
+        DataInputStream dis = new DataInputStream(is);
+        NFGraphSpec spec = deserializeSpec(dis);
+        NFGraphModelHolder models = deserializeModels(dis);
+        NFCompressedGraphPointers pointers = pointersDeserializer.deserializePointers(dis);
+        long dataLength = deserializeDataLength(dis);
+        ByteData data = deserializeData(dis, dataLength, byteSegmentPool);
+        return new NFWeightedCompressedGraph(spec, models, data, dataLength, pointers);
     }
 
 

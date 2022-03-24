@@ -13,6 +13,7 @@ repositories {
 
 dependencies {
     testCompile 'junit:junit:4.11'
+    implementation group: 'it.unimi.dsi', name: 'fastutil', version: '8.1.0'
 }
 
 javadoc.includes << "**/NFGraph.java" << "**/NFBuildGraph.java" << "**/NFCompressedGraph.java" << "**/OrdinalSet.java" << "**/NFBuildGraphOrdinalSet.java" << "**/CompactOrdinalSet.java" << "**/HashSetOrdinalSet.java" << "**/BitSetOrdinalSet.java" << "**/OrdinalIterator.java" << "**/NFBuildGraphOrdinalIterator.java"<< "**/CompactOrdinalIterator.java" << "**/HashSetOrdinalIterator.java" << "**/BitSetOrdinalIterator.java" << "**/NFGraphSpec.java" << "**/NFNodeSpec.java" << "**/NFPropertySpec.java" << "**/OrdinalMap.java" << "**/NFGraphException.java"
