@@ -76,6 +76,27 @@ public class ByteArrayBuffer {
             writeByte((byte)(value & 0x7F));
         }
     }
+    
+    /**
+     * Writes a variable-byte encoded integer to the byte array.
+     */
+    public void writeVLong(long value) {
+        if(value < 0) {
+            writeByte((byte)0x80);
+            return;
+        } else {
+            if(value > 0xFFFFFFFFFFFFFFL)   writeByte((byte)(0x80 | ((value >>> 56) & 0x7FL)));
+            if(value > 0x1FFFFFFFFFFFFL)    writeByte((byte)(0x80 | ((value >>> 49) & 0x7FL)));
+            if(value > 0x3FFFFFFFFFFL)      writeByte((byte)(0x80 | ((value >>> 42) & 0x7FL)));
+            if(value > 0x7FFFFFFFFL)        writeByte((byte)(0x80 | ((value >>> 35) & 0x7FL)));
+            if(value > 0xFFFFFFFL)          writeByte((byte)(0x80 | ((value >>> 28) & 0x7FL)));
+            if(value > 0x1FFFFFL)           writeByte((byte)(0x80 | ((value >>> 21) & 0x7FL)));
+            if(value > 0x3FFFL)             writeByte((byte)(0x80 | ((value >>> 14) & 0x7FL)));
+            if(value > 0x7FL)               writeByte((byte)(0x80 | ((value >>>  7) & 0x7FL)));
+
+            writeByte((byte)(value & 0x7F));
+        }
+    }
 
     /**
      * The current length of the written data, in bytes.

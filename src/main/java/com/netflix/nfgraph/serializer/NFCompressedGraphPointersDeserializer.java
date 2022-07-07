@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014 Netflix, Inc.
+ *  Copyright 2014-2022 Netflix, Inc.
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class NFCompressedGraphPointersDeserializer {
         long currentPointer = 0;
 
         for(int i=0;i<numNodes;i++) {
-            int vInt = reader.readVInt();
+            long vInt = reader.readVLong();
             if(vInt == -1) {
                 pointers[i] = -1;
             } else {

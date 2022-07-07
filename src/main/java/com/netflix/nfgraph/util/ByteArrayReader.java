@@ -1,5 +1,5 @@
 /*
- *  Copyright 2013 Netflix, Inc.
+ *  Copyright 2013-2022 Netflix, Inc.
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -82,6 +82,28 @@ public class ByteArrayReader {
             return -1;
 
         int value = b & 0x7F;
+        while ((b & 0x80) != 0) {
+          b = readByte();
+          value <<= 7;
+          value |= (b & 0x7F);
+        }
+
+        return value;
+    }
+
+    /**
+     * @return a variable-byte long at the current offset.  The offset is incremented by the size of the returned long.
+     */
+    public long readVLong() {
+        if(pointer >= endByte)
+            return -1;
+
+        byte b = readByte();
+
+        if(b == (byte) 0x80)
+            return -1;
+
+        long value = b & 0x7F;
         while ((b & 0x80) != 0) {
           b = readByte();
           value <<= 7;
